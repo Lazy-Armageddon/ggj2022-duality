@@ -6,9 +6,8 @@ using Ink.Runtime;
 public class InkManager : MonoBehaviour
 {
     // called before Start()
-    void Awake () {
-        // Remove the default message
-        RemoveChildren();
+    void Awake ()
+    {
     }
 
     void Start()
@@ -29,12 +28,27 @@ public class InkManager : MonoBehaviour
 
     public void DisplayNextLine()
     {
+        // clear whatever we may have had from before
+        RemoveChildren();
+
         if (!_story.canContinue) { return; }
 
-        string text = _story.Continue(); // gets next line
-        text = text?.Trim(); // removes white space from text
+        // get next line and trim whitespace off
+        string text = _story.Continue();
+        text = text?.Trim();
 
-        CreateContentView(text); // displays new text
+        // display new text
+        CreateContentView(text);
+
+        // create "next" button
+        var button = CreateChoiceView("next");
+        button.onClick.AddListener(delegate {
+            DisplayNextLine();
+        });
+        // make sure they're not overlapping -- cheat button downwards
+        //button.transform.position = new Vector3(0, -10, 0);
+        var buttonRectTransform = button.GetComponent<RectTransform>();
+        buttonRectTransform.localPosition += Vector3.down * 100;
     }
 
     // Creates a textbox showing the the line of text
@@ -49,8 +63,8 @@ public class InkManager : MonoBehaviour
     Button CreateChoiceView(string text)
     {
         // Creates the button from a prefab
-        Button choice = Instantiate (buttonPrefab) as Button;
-        choice.transform.SetParent (canvas.transform, false);
+        Button choice = Instantiate(buttonPrefab) as Button;
+        choice.transform.SetParent(canvas.transform, false);
 
         // Gets the text from the button prefab
         Text choiceText = choice.GetComponentInChildren<Text>();
