@@ -9,45 +9,35 @@ public class PlayerMovement : MonoBehaviour {
 	public Animator animator;
 	public PlayerInput input;
 
-	public float runSpeed = 40f;
-
-	float horizontalMove = 0f;
-	bool jump = false;
-	bool dash = false;
+	private const float WalkSpeed = 20f;
+	private const float RunSpeed = 40f;
+	
+	private float moveSpeed = WalkSpeed;
+	private float horizontalMove = 0f;
+	private bool jump = false;
+	private bool dash = false;
 
 	//bool dashAxis = false;
+	
+	private void OnRun(InputValue value) {
+		moveSpeed = value.isPressed ? RunSpeed : WalkSpeed;
+	}
+
+	private void OnHorizMove(InputValue value) {
+		horizontalMove = value.Get<float>() * moveSpeed;
+	}
+
+	private void OnJump(InputValue value) {
+		jump = true;
+	}
+
+	private void OnDash(InputValue value) {
+		dash = true;
+	}
 
 	// Update is called once per frame
 	void Update () {
-
-		horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
-
 		animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
-
-		if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.Space))
-		{
-			jump = true;
-		}
-
-		if (Input.GetKeyDown(KeyCode.C))
-		{
-			dash = true;
-		}
-
-		/*if (Input.GetAxisRaw("Dash") == 1 || Input.GetAxisRaw("Dash") == -1) //RT in Unity 2017 = -1, RT in Unity 2019 = 1
-		{
-			if (dashAxis == false)
-			{
-				dashAxis = true;
-				dash = true;
-			}
-		}
-		else
-		{
-			dashAxis = false;
-		}
-		*/
-
 	}
 
 	public void OnFall()

@@ -2,22 +2,13 @@
     "name": "Controls",
     "maps": [
         {
-            "name": "General",
+            "name": "Active",
             "id": "6a0891af-d4da-4326-a685-b475648d6538",
             "actions": [
                 {
-                    "name": "MoveRight",
+                    "name": "HorizMove",
                     "type": "Value",
                     "id": "aca6c1fe-55b7-4acc-bbbb-50a9e26f2bb6",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "MoveLeft",
-                    "type": "Value",
-                    "id": "efbf8da4-8b10-4105-af8b-8420ef8cf811",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -51,9 +42,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack",
+                    "name": "MeleeAttack",
                     "type": "Button",
                     "id": "dbdfcbdd-e0f0-44da-b594-5db6fd171f1b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RangedAttack",
+                    "type": "Button",
+                    "id": "4c7eaa52-4a37-49f4-92aa-5a65719bddc1",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -62,31 +62,75 @@
             ],
             "bindings": [
                 {
-                    "name": "",
-                    "id": "d89535b7-a847-4bd0-918a-741530688423",
-                    "path": "",
+                    "name": "1D Axis",
+                    "id": "9737033c-93b1-4c23-963b-218708eed796",
+                    "path": "1DAxis",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard & Mouse",
-                    "action": "MoveRight",
-                    "isComposite": false,
+                    "groups": "",
+                    "action": "HorizMove",
+                    "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "b2da268f-1799-492e-a2ef-da8338be1948",
-                    "path": "",
+                    "name": "negative",
+                    "id": "d5b80a41-583a-4ef1-9540-66d779b456e1",
+                    "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard & Mouse",
-                    "action": "MoveLeft",
+                    "groups": "",
+                    "action": "HorizMove",
                     "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "e8359a8d-d4eb-4202-a856-8a064a5b8001",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HorizMove",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "60b2bf03-3284-433c-8c16-84a3afcee294",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HorizMove",
+                    "isComposite": true,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "2fbffbe6-a096-4ebb-859e-425ad8ae1ff4",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HorizMove",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "230fd458-e2ef-4f09-98aa-bffa625186c8",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HorizMove",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
                     "id": "1fda919d-ab47-4992-83c4-9a129f20cc81",
-                    "path": "",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard & Mouse",
@@ -96,8 +140,19 @@
                 },
                 {
                     "name": "",
+                    "id": "e4eb8f30-2262-4023-9199-a9d2b4572b9d",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "d7b34c54-10ba-42c8-be99-4176a2e0b62c",
-                    "path": "",
+                    "path": "<Keyboard>/c",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard & Mouse",
@@ -108,22 +163,83 @@
                 {
                     "name": "",
                     "id": "ffe009d6-999c-4e36-ba2d-01dac7ec993c",
-                    "path": "",
+                    "path": "<Keyboard>/x",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard & Mouse",
-                    "action": "Attack",
+                    "action": "MeleeAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "24f400cd-c925-4d2c-8807-4a5887258ff6",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MeleeAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "4a707928-9efd-4d83-b20e-d7d4db7ec08e",
-                    "path": "",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard & Mouse",
                     "action": "Run",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0ad7c639-6837-44c7-95a5-ce331598d658",
+                    "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RangedAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "25249903-6411-4d93-8ba2-8d33af498aeb",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RangedAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Dialog",
+            "id": "87d45139-9451-4c59-b387-29716f5996f6",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "e1eed7bc-e0e9-4910-82eb-7a0a5ab39cc4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "5153ea5d-9cf1-4011-8d78-cda4c059c366",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
