@@ -218,13 +218,49 @@
             ]
         },
         {
-            "name": "Dialog",
+            "name": "Menu",
             "id": "87d45139-9451-4c59-b387-29716f5996f6",
             "actions": [
                 {
-                    "name": "New action",
+                    "name": "Next",
                     "type": "Button",
                     "id": "e1eed7bc-e0e9-4910-82eb-7a0a5ab39cc4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Prev",
+                    "type": "Button",
+                    "id": "349a0e07-4c98-4b43-b884-745a574dfdd1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Select",
+                    "type": "Button",
+                    "id": "cec52906-7b9b-47c8-bc22-0f7c8f70b1b4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "a5736364-e240-4f2e-8dd4-e10409b80f87",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "939d8c67-4a2e-4007-ad28-32bb1ebacc04",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -235,6 +271,72 @@
                 {
                     "name": "",
                     "id": "5153ea5d-9cf1-4011-8d78-cda4c059c366",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Next",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "54570e8a-1295-445a-9304-716ecc7bde1b",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Next",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b62cdbcb-84da-4419-adc2-b232d23fc8b3",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Prev",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bbff6852-291d-4f28-98d8-8ef138d86741",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Prev",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9de15a0b-2291-4199-ae4b-66539ac20d59",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7c4ff6c2-d11d-4876-989c-db1a99a54d98",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3e776379-a88a-4148-8950-f40666d36733",
                     "path": "",
                     "interactions": "",
                     "processors": "",
