@@ -23,38 +23,78 @@ public class InkManager : MonoBehaviour
             OnCreateStory(_story);
         }
 
-        DisplayNextLine();
+        AdvanceStory();
     }
 
-    public void DisplayNextLine()
+    public void AdvanceStory()
     {
         // clear whatever we may have had from before
         RemoveChildren();
 
-        if (!_story.canContinue) { return; }
+        if (_story.canContinue)
+        {
+            // handle next line w/ "next" button
 
-        // get next line and trim whitespace off
-        string text = _story.Continue();
-        text = text?.Trim();
+            // get next line and trim whitespace off
+            string text = _story.Continue();
+            text = text?.Trim();
 
-        // display new text
-        CreateContentView(text);
+            // display new text
+            CreateContentView(text);
 
-        // create "next" button
-        var button = CreateChoiceView("next");
-        button.onClick.AddListener(delegate {
-            DisplayNextLine();
-        });
-        // make sure they're not overlapping -- cheat button downwards
-        //button.transform.position = new Vector3(0, -10, 0);
-        var buttonRectTransform = button.GetComponent<RectTransform>();
-        buttonRectTransform.localPosition += Vector3.down * 100;
+            // create "next" button
+            var button = CreateChoiceView("next");
+            button.onClick.AddListener(delegate {
+                AdvanceStory();
+            });
+
+            // cheat button downwards to help keep it from overlapping text
+            var buttonRectTransform = button.GetComponent<RectTransform>();
+            buttonRectTransform.localPosition += Vector3.down * 150;
+        }
+        else if (_story.currentChoices.Count > 0)
+        {
+            // a fork in the road!
+
+            // display all the choices
+            for (int i = 0; i < _story.currentChoices.Count; i++)
+            {
+                Choice choice = _story.currentChoices[i];
+                Button button = CreateChoiceView(choice.text.Trim());
+
+                // Tell the button what to do when we press it
+                button.onClick.AddListener(delegate {
+                    OnClickChoiceButton(choice);
+                });
+
+                // cheat button downwards to help keep it from overlapping the others
+                var buttonRectTransform = button.GetComponent<RectTransform>();
+                buttonRectTransform.localPosition += Vector3.down * i * 30;
+            }
+        }
+        else
+        {
+            // we've read all the content and there's no choices
+            // the story is finished!
+
+            Button choice = CreateChoiceView("End of story.\nRestart?");
+            choice.onClick.AddListener(delegate {
+                StartStory();
+            });
+        }
+    }
+
+    // When we click the choice button, tell the story to choose that choice!
+    void OnClickChoiceButton(Choice choice)
+    {
+        _story.ChooseChoiceIndex(choice.index);
+        AdvanceStory();
     }
 
     // Creates a textbox showing the the line of text
     void CreateContentView(string text)
     {
-        Text storyText = Instantiate (textPrefab) as Text;
+        Text storyText = Instantiate(textPrefab) as Text;
         storyText.text = text;
         storyText.transform.SetParent(canvas.transform, false);
     }
