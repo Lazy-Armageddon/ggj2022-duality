@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour {
 
 	public CharacterController2D controller;
 	public Animator animator;
+	public PlayerInput input;
 
 	public float runSpeed = 40f;
 
@@ -14,7 +16,7 @@ public class PlayerMovement : MonoBehaviour {
 	bool dash = false;
 
 	//bool dashAxis = false;
-	
+
 	// Update is called once per frame
 	void Update () {
 
@@ -22,7 +24,7 @@ public class PlayerMovement : MonoBehaviour {
 
 		animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
 
-		if (Input.GetKeyDown(KeyCode.Z))
+		if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.Space))
 		{
 			jump = true;
 		}
