@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
         if (!inkManager) { Debug.Log("warning: could not find 'InkManager'"); }
         if (!dialogManager) { Debug.Log("warning: could not find 'DialogManager'"); }
 
+        // hook ink manager and dialog manager up with each other
         if (inkManager != null && dialogManager != null)
         {
             inkManager.OnTextLine += dialogManager.OnTextLine;
