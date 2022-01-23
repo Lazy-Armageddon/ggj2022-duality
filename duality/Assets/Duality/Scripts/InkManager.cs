@@ -17,7 +17,6 @@ public class InkManager : MonoBehaviour
 
     void Start()
     {
-        //StartStory();
     }
 
     public bool _started = false;
@@ -28,7 +27,7 @@ public class InkManager : MonoBehaviour
         Debug.Log("ink error: " + type.ToString() + " - " + message);
     }
 
-    public void StartStory()
+    public void LoadStory()
     {
         _story = new Story(_inkJsonAsset.text);
 
@@ -53,6 +52,12 @@ public class InkManager : MonoBehaviour
             Debug.Log("no warnings -- great!");
         }
         Debug.Log("------------------------------");
+    }
+
+    public void StartStory()
+    {
+        // set up state management
+        storyState = _story.variablesState;
 
         if (OnCreateStory != null)
         {
@@ -119,10 +124,23 @@ public class InkManager : MonoBehaviour
         }
     }
 
+    // write state variables from external to internal state
+    public void WriteStateVariables(Dictionary<string, object> externalStoryState)
+    {
+        //
+    }
+
+    // read state variables from internal state and store externally
+    public void ReadStateVariables(Dictionary<string, object> externalStoryState)
+    {
+        //
+    }
+
     public event Action<Story> OnCreateStory;
     public event Action<string> OnTextLine;
     public event Action< List<Ink.Runtime.Choice> > OnChoices;
     public event Action OnFinishStory;
+    private VariablesState storyState;
 
     [SerializeField]
     private TextAsset _inkJsonAsset = null;

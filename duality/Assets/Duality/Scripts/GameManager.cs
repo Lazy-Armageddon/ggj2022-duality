@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class GameManager : MonoBehaviour
     private DialogManager dialogManager;
     private GameObject player;
     private GameObject[] npcs;
+    private Dictionary<string, object> storyState;
 
     //-----------------------------------------------------------------------------
     void Awake()
@@ -104,20 +106,41 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // all clear -- start the story! (and disable player input)
+        // all clear to begin starting the story
         HookUpInkManager(ink);
+
+        // load the story
+        ink.LoadStory();
+
+        // todo -- provide global state variables
+        ink.WriteStateVariables(storyState);
+
+        // start the story
         ink.StartStory();
+
+        // disable player input
         var playerInput = player.GetComponent<PlayerInput>();
         playerInput.enabled = false;
     }
 
     void OnFinishStory()
     {
+        // wrap up story details
+        if (activeInkManager != null)
+        {
+            // todo: pull out story variables
+            activeInkManager.ReadStateVariables(storyState);
+
+            // unhook callbacks
+            UnhookInkManager(activeInkManager);
+        }
+
+
+        // let player move again
         if (player != null)
         {
             var playerInput = player.GetComponent<PlayerInput>();
             playerInput.enabled = true;
-            UnhookInkManager(activeInkManager);
         }
     }
 }
