@@ -10,13 +10,16 @@ public class CameraManager : MonoBehaviour
 {
     [Header("Player")]
     public Transform player;
-    public Transform vignettePlayerStart;
 
     [FormerlySerializedAs("cameraController")]
     [Header("Camera")]
     public CameraFollow cameraFollow;
     public PixelPerfectCamera pixelCamera;
+
+    [Header("Vignette")]
+    public Transform vignettePlayerStart;
     public float vignetteTransitionDuration = 1.5f;
+    public AudioClip vignetteStartSound;
 
     [Header("UI")]
     public Transform angelDemonRoot;
@@ -46,6 +49,8 @@ public class CameraManager : MonoBehaviour
         _LerpCameraToNewLocation();
         _LerpUIOffscreen();
 
+        GetComponent<AudioSource>().PlayOneShot(vignetteStartSound);
+
         void _WarpPlayerToNewLocation()
         {
             // Warp the player to vignette location once out of camera view
@@ -64,11 +69,13 @@ public class CameraManager : MonoBehaviour
             newCameraPosition.z = camera.transform.position.z;
 
             // Lerp the camera through the clouds to the vignette area
-            var cameraTween = camera.transform.DOMove(newCameraPosition, vignetteTransitionDuration);
+            var sequence = DOTween.Sequence();
+            sequence.AppendInterval(0.25f);
+            sequence.Append(camera.transform.DOMove(newCameraPosition, vignetteTransitionDuration));
             // cameraTween.SetEase(Ease.InCubic); //<-- change interpolation type
 
             // restore camera control when done
-            cameraTween.OnComplete((() =>
+            sequence.OnComplete((() =>
             {
                 cameraFollow.enabled = true;
             }));
