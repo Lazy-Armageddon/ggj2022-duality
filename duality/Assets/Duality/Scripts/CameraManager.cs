@@ -44,6 +44,7 @@ public class CameraManager : MonoBehaviour
     }
 
     //-----------------------------------------------------------------------------
+    // TODO - disable player input during vignette transition
     void StartVignette()
     {
         _WarpPlayerToNewLocation();
