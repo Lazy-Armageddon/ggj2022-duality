@@ -4,36 +4,59 @@ using UnityEngine.InputSystem;
 public class GameManager : MonoBehaviour
 {
     [Header("Dialogue")]
-    private InkManager inkManager;
+    private InkManager activeInkManager;
     private DialogManager dialogManager;
     private GameObject player;
-    private GameObject npc;
+    private GameObject[] npcs;
 
     //-----------------------------------------------------------------------------
     void Awake()
     {
         // look for special game objects automatically (managers etc)
-        inkManager = GameObject.Find("InkManager")?.GetComponent<InkManager>();
         dialogManager = GameObject.Find("DialogManager")?.GetComponent<DialogManager>();
         player = GameObject.Find("Player");
-        npc = GameObject.Find("NPC");
+        if (npcs == null)
+        {
+            npcs = GameObject.FindGameObjectsWithTag("Enemy");
+        }
 
         // warn about those that could not be find
-        if (!inkManager) { Debug.Log("warning: could not find 'InkManager'"); }
         if (!dialogManager) { Debug.Log("warning: could not find 'DialogManager'"); }
         if (!player) { Debug.Log("warning: could not find 'Player'"); }
-        if (!npc) { Debug.Log("warning: could not find 'NPC'"); }
+        if (npcs == null) { Debug.Log("warning: could not find any GameObjects tagged \"npc\""); }
+    }
 
+    void HookUpInkManager(InkManager ink)
+    {
         // hook ink manager and dialog manager up with each other
-        if (inkManager != null && dialogManager != null)
+        if (ink != null && dialogManager != null)
         {
-            inkManager.OnTextLine += dialogManager.OnTextLine;
-            dialogManager.OnAdvanceStory += inkManager.AdvanceStory;
-            dialogManager.OnSelectChoice += inkManager.OnClickChoiceButton;
+            ink.OnTextLine += dialogManager.OnTextLine;
+            dialogManager.OnAdvanceStory += ink.AdvanceStory;
+            dialogManager.OnSelectChoice += ink.OnClickChoiceButton;
 
-            inkManager.OnChoices += dialogManager.OnChoices;
-            inkManager.OnFinishStory += dialogManager.OnFinishStory;
-            inkManager.OnFinishStory += OnFinishStory;
+            ink.OnChoices += dialogManager.OnChoices;
+            ink.OnFinishStory += dialogManager.OnFinishStory;
+            ink.OnFinishStory += OnFinishStory;
+
+            activeInkManager = ink;
+        }
+    }
+
+    void UnhookInkManager(InkManager ink)
+    {
+        // unhook ink manager and dialog manager from each other
+        if (ink != null && dialogManager != null)
+        {
+            ink.OnTextLine -= dialogManager.OnTextLine;
+            dialogManager.OnAdvanceStory -= ink.AdvanceStory;
+            dialogManager.OnSelectChoice -= ink.OnClickChoiceButton;
+
+            ink.OnChoices -= dialogManager.OnChoices;
+            ink.OnFinishStory -= dialogManager.OnFinishStory;
+            ink.OnFinishStory -= OnFinishStory;
+
+            activeInkManager = null;
         }
     }
 
@@ -46,22 +69,46 @@ public class GameManager : MonoBehaviour
     //-----------------------------------------------------------------------------
     void Update()
     {
-        // if player gets within range of NPC, start story
-        if (player != null && npc != null)
+        // if player gets within range of any NPC, start story
+        foreach (GameObject npc in npcs)
         {
-            const float storyThreshold = 2.0f;
-            if ((player.transform.position - npc.transform.position).sqrMagnitude < storyThreshold*storyThreshold)
-            {
-                // within range -- start the story, if one isn't already underway
-                if (!inkManager.StoryStarted)
-                {
-                    inkManager.StartStory();
-                    var playerInput = player.GetComponent<PlayerInput>();
-                    playerInput.enabled = false;
-                    //playerInput.DeactivateInput();
-                }
-            }
+            TryTalkNPC(npc);
         }
+    }
+
+    void TryTalkNPC(GameObject npc)
+    {
+        // bail if references are bogus
+        if (player == null || npc == null)
+        {
+            return;
+        }
+
+        // are we within range?
+        const float storyThreshold = 2.0f;
+        if ((player.transform.position - npc.transform.position).sqrMagnitude > storyThreshold*storyThreshold)
+        {
+            return;
+        }
+
+        // does this npc have an ink manager?
+        var ink = npc.GetComponent<InkManager>();
+        if (ink == null)
+        {
+            return;
+        }
+
+        // is the story already started?
+        if (ink.StoryStarted)
+        {
+            return;
+        }
+
+        // all clear -- start the story! (and disable player input)
+        HookUpInkManager(ink);
+        ink.StartStory();
+        var playerInput = player.GetComponent<PlayerInput>();
+        playerInput.enabled = false;
     }
 
     void OnFinishStory()
@@ -70,6 +117,7 @@ public class GameManager : MonoBehaviour
         {
             var playerInput = player.GetComponent<PlayerInput>();
             playerInput.enabled = true;
+            UnhookInkManager(activeInkManager);
         }
     }
 }
