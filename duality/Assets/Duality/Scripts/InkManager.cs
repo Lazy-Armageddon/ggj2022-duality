@@ -1,12 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.IO;
+using System.Diagnostics;
 using Ink.Runtime;
 
 public class InkManager : MonoBehaviour
 {
     // called before Start()
-    void Awake ()
+    void Awake()
     {
     }
 
@@ -28,9 +33,6 @@ public class InkManager : MonoBehaviour
 
     public void AdvanceStory()
     {
-        // clear whatever we may have had from before
-        RemoveChildren();
-
         if (_story.canContinue)
         {
             // handle next line w/ "next" button
@@ -39,37 +41,19 @@ public class InkManager : MonoBehaviour
             string text = _story.Continue();
             text = text?.Trim();
 
-            // display new text
-            CreateContentView(text);
-
-            // create "next" button
-            var button = CreateChoiceView("next");
-            button.onClick.AddListener(delegate {
-                AdvanceStory();
-            });
-
-            // cheat button downwards to help keep it from overlapping text
-            var buttonRectTransform = button.GetComponent<RectTransform>();
-            buttonRectTransform.localPosition += Vector3.down * 150;
+            // provide text line out
+            if (OnTextLine != null)
+            {
+                OnTextLine(text);
+            }
         }
         else if (_story.currentChoices.Count > 0)
         {
             // a fork in the road!
 
-            // display all the choices
-            for (int i = 0; i < _story.currentChoices.Count; i++)
+            if (OnChoices != null)
             {
-                Choice choice = _story.currentChoices[i];
-                Button button = CreateChoiceView(choice.text.Trim());
-
-                // Tell the button what to do when we press it
-                button.onClick.AddListener(delegate {
-                    OnClickChoiceButton(choice);
-                });
-
-                // cheat button downwards to help keep it from overlapping the others
-                var buttonRectTransform = button.GetComponent<RectTransform>();
-                buttonRectTransform.localPosition += Vector3.down * i * 30;
+                OnChoices(_story.currentChoices);
             }
         }
         else
@@ -77,68 +61,27 @@ public class InkManager : MonoBehaviour
             // we've read all the content and there's no choices
             // the story is finished!
 
+            /*
             Button choice = CreateChoiceView("End of story.\nRestart?");
             choice.onClick.AddListener(delegate {
                 StartStory();
             });
+            //*/
         }
     }
 
     // When we click the choice button, tell the story to choose that choice!
-    void OnClickChoiceButton(Choice choice)
+    public void OnClickChoiceButton(Choice choice)
     {
         _story.ChooseChoiceIndex(choice.index);
         AdvanceStory();
     }
 
-    // Creates a textbox showing the the line of text
-    void CreateContentView(string text)
-    {
-        Text storyText = Instantiate(textPrefab) as Text;
-        storyText.text = text;
-        storyText.transform.SetParent(canvas.transform, false);
-    }
-
-    // Creates a button showing the choice text
-    Button CreateChoiceView(string text)
-    {
-        // Creates the button from a prefab
-        Button choice = Instantiate(buttonPrefab) as Button;
-        choice.transform.SetParent(canvas.transform, false);
-
-        // Gets the text from the button prefab
-        Text choiceText = choice.GetComponentInChildren<Text>();
-        choiceText.text = text;
-
-        // Make the button expand to fit the text
-        HorizontalLayoutGroup layoutGroup = choice.GetComponent<HorizontalLayoutGroup>();
-        layoutGroup.childForceExpandHeight = false;
-
-        return choice;
-    }
-
-    // Destroys all the children of this gameobject (all the UI)
-    void RemoveChildren()
-    {
-        int childCount = canvas.transform.childCount;
-        for (int i = childCount - 1; i >= 0; --i)
-        {
-            GameObject.Destroy (canvas.transform.GetChild (i).gameObject);
-        }
-    }
-
-    public static event Action<Story> OnCreateStory;
+    public event Action<Story> OnCreateStory;
+    public event Action<string> OnTextLine;
+    public event Action< List<Ink.Runtime.Choice> > OnChoices;
 
     [SerializeField]
     private TextAsset _inkJsonAsset = null;
     private Story _story;
-
-    [SerializeField]
-    private Canvas canvas = null;
-
-    // UI Prefabs
-    [SerializeField]
-    private Text textPrefab = null;
-    [SerializeField]
-    private Button buttonPrefab = null;
 }
