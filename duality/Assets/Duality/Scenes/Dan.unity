@@ -4765,7 +4765,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _started: 0
-  _inkJsonAsset: {fileID: 4900000, guid: d3d7aed451b92a6499910640db428691, type: 3}
+  _inkJsonAsset: {fileID: 4900000, guid: 58c032099cf5a544c92f25ae90f47dfa, type: 3}
 --- !u!1 &2011287913
 GameObject:
   m_ObjectHideFlags: 0
