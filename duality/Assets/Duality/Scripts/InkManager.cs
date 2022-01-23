@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using System.Diagnostics;
+//using System.Diagnostics;
 using Ink.Runtime;
 
 public class InkManager : MonoBehaviour
@@ -23,9 +23,37 @@ public class InkManager : MonoBehaviour
     public bool _started = false;
     public bool StoryStarted { get { return _started; }}
 
+    public void InkErrorHandler(string message, Ink.ErrorType type)
+    {
+        Debug.Log("ink error: " + type.ToString() + " - " + message);
+    }
+
     public void StartStory()
     {
         _story = new Story(_inkJsonAsset.text);
+
+        // report errors and warnings
+        Debug.Log("------------------------------");
+        Debug.Log("Report for loaded story:");
+
+        // set up an error handler
+        _story.onError += InkErrorHandler;
+
+        // continue report (warnings)
+        if (_story.hasWarning)
+        {
+            for (int i = 0; i < _story.currentWarnings.Count; i++)
+            {
+                var warning = _story.currentWarnings[i];
+                Debug.Log("ink warning: " + warning);
+            }
+        }
+        else
+        {
+            Debug.Log("no warnings -- great!");
+        }
+        Debug.Log("------------------------------");
+
         if (OnCreateStory != null)
         {
             OnCreateStory(_story);
