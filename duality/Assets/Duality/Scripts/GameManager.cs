@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -36,6 +37,8 @@ public class GameManager : MonoBehaviour
         if (!dialogManager) { Debug.Log("warning: could not find 'DialogManager'"); }
         if (!player) { Debug.Log("warning: could not find 'Player'"); }
         if (npcs == null) { Debug.Log("warning: could not find any GameObjects tagged \"npc\""); }
+
+        StartCoroutine(DebugUpdate());
     }
 
     //-----------------------------------------------------------------------------
@@ -47,10 +50,35 @@ public class GameManager : MonoBehaviour
             TryTalkNPC(npc);
         }
 
-        // TEMP DEBUG - do this in response to dialogue
-        if (Input.GetKeyDown(KeyCode.T))
+    }
+
+    //-----------------------------------------------------------------------------
+    IEnumerator DebugUpdate()
+    {
+        // test go to vignette
+        while (true)
         {
-            vignetteManager.StartVignette(tempVignetteDataInstance1);
+            // TEMP DEBUG - do this in response to dialogue
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                vignetteManager.StartVignette(tempVignetteDataInstance1);
+                break;
+            }
+            yield return null;
+        }
+
+        yield return null;
+
+        // test return from vignette
+        while (true)
+        {
+            // TEMP DEBUG - do this in response to dialogue
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                vignetteManager.StopVignette();
+                break;
+            }
+            yield return null;
         }
     }
 

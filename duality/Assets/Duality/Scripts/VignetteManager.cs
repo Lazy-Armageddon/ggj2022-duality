@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,14 +11,11 @@ public class VignetteManager : MonoBehaviour
     public Transform player;
     public PlayerInput playerInput;
 
-    [FormerlySerializedAs("cameraController")]
     [Header("Camera")]
     public CameraFollow cameraFollow;
     public PixelPerfectCamera pixelCamera;
 
     [Header("Vignette")]
-    public Transform vignettePlayerStart;
-    public Transform vignetteCameraStart;
     public float vignetteTransitionDuration = 1.5f;
     public AudioClip vignetteStartSound;
     public AudioClip vignetteMusic;
@@ -26,79 +24,135 @@ public class VignetteManager : MonoBehaviour
     public Transform angelDemonRoot;
     public Transform playerNPCRoot;
 
-    private VignetteData _currentVignetteData;
+    private VignetteData currentVignetteData;
+    private Vector3 lastPlayerPurgatoryPosition;
+    private Vector3 lastCameraPurgatoryPosition;
 
     //-----------------------------------------------------------------------------
     private void Start()
     {
-        pixelCamera.refResolutionX = Screen.width - 420;
-        pixelCamera.refResolutionY = Screen.height - 420;
+        (int x, int y) = GetPreferredPixelResolution();
+        pixelCamera.refResolutionX = x;
+        pixelCamera.refResolutionY = y;
+    }
+
+    //-----------------------------------------------------------------------------
+    (int, int) GetPreferredPixelResolution()
+    {
+        return (Screen.width - 420, Screen.height - 420);
     }
 
     //-----------------------------------------------------------------------------
     public void StartVignette(VignetteData newVignetteData)
     {
-        if (_currentVignetteData)
+        if (currentVignetteData)
         {
-            _currentVignetteData.gameObject.SetActive(false);
+            currentVignetteData.gameObject.SetActive(false);
         }
         newVignetteData.gameObject.SetActive(true);
-        _currentVignetteData = newVignetteData;
+        currentVignetteData = newVignetteData;
 
-        _WarpPlayerToNewLocation();
-        _LerpCameraToNewLocation();
-        _LerpUIOffscreen();
+        if (currentVignetteData.npc)
+        {
+            currentVignetteData.npc.gameObject.SetActive(false);
+        }
+
+        WarpPlayerToNewLocation(newVignetteData.playerStart.position);
+        LerpCameraToNewLocation(newVignetteData.cameraStart.position, () =>
+        {
+            currentVignetteData.npc.gameObject.SetActive(true);
+        });
+        LerpUIOffscreen();
 
         AudioSource audioSource = GetComponent<AudioSource>();
         audioSource.PlayOneShot(vignetteStartSound);
         audioSource.clip = vignetteMusic;
         audioSource.Play();
 
-        void _WarpPlayerToNewLocation()
+    }
+
+
+    //-----------------------------------------------------------------------------
+    public void StopVignette()
+    {
+        if (currentVignetteData)
         {
-            // Warp the player to vignette location once out of camera view
-            var sequence = DOTween.Sequence();
-            sequence.AppendInterval(vignetteTransitionDuration * 0.6f);
-            sequence.Append(player.DOMove(newVignetteData.playerStart.position, 0f));
+            currentVignetteData.gameObject.SetActive(false);
+            currentVignetteData = null;
         }
 
-        void _LerpCameraToNewLocation()
+        WarpPlayerToNewLocation(lastPlayerPurgatoryPosition);
+        LerpCameraToNewLocation(lastCameraPurgatoryPosition);
+        LerpUIOnscreen();
+
+        AudioSource audioSource = GetComponent<AudioSource>();
+        audioSource.Stop();
+    }
+
+    //-----------------------------------------------------------------------------
+    void WarpPlayerToNewLocation(Vector3 newLocation)
+    {
+        lastPlayerPurgatoryPosition = player.position;
+
+        // Warp the player to vignette location once out of camera view
+        var sequence = DOTween.Sequence();
+        sequence.AppendInterval(vignetteTransitionDuration * 0.6f);
+        sequence.Append(player.DOMove(newLocation, 0f));
+    }
+
+    //-----------------------------------------------------------------------------
+    void LerpCameraToNewLocation(Vector3 newLocation, Action OnCompleteCB = null)
+    {
+        Camera camera = cameraFollow.GetComponent<Camera>();
+        lastCameraPurgatoryPosition = camera.transform.position;
+        cameraFollow.enabled = false;
+        playerInput.enabled = false;
+
+        // We want to go to where the player is but maintain our z value
+        var newCameraPosition = newLocation;
+        newCameraPosition.z = camera.transform.position.z;
+
+        // Lerp the camera through the clouds to the vignette area
+        var sequence = DOTween.Sequence();
+        sequence.AppendInterval(0.25f);
+        sequence.Append(camera.transform.DOMove(newCameraPosition, vignetteTransitionDuration));
+        // cameraTween.SetEase(Ease.InCubic); //<-- change interpolation type
+
+        // restore camera control when done
+        sequence.OnComplete((() =>
         {
-            Camera camera = cameraFollow.GetComponent<Camera>();
-            cameraFollow.enabled = false;
-            playerInput.enabled = false;
-            _currentVignetteData.npc.SetActive(false);
+            cameraFollow.enabled = true;
+            playerInput.enabled = true;
+            OnCompleteCB?.Invoke();
+        }));
+    }
 
-            // We want to go to where the player is but maintain our z value
-            var newCameraPosition = newVignetteData.cameraStart.position;
-            newCameraPosition.z = camera.transform.position.z;
+    //-----------------------------------------------------------------------------
+    void LerpUIOffscreen()
+    {
+        float hackDistance = 10f;
+        Vector3 uiPosition = angelDemonRoot.position;
+        angelDemonRoot.DOMove(uiPosition + Vector3.up * hackDistance, vignetteTransitionDuration);
 
-            // Lerp the camera through the clouds to the vignette area
-            var sequence = DOTween.Sequence();
-            sequence.AppendInterval(0.25f);
-            sequence.Append(camera.transform.DOMove(newCameraPosition, vignetteTransitionDuration));
-            // cameraTween.SetEase(Ease.InCubic); //<-- change interpolation type
+        Vector3 playerRootUIPosition = playerNPCRoot.position;
+        playerNPCRoot.DOMove((playerRootUIPosition - Vector3.up * hackDistance), vignetteTransitionDuration);
 
-            // restore camera control when done
-            sequence.OnComplete((() =>
-            {
-                cameraFollow.enabled = true;
-                playerInput.enabled = true;
-                _currentVignetteData.npc.SetActive(true);
-            }));
-        }
+        DOTween.To(() => pixelCamera.refResolutionX, (x) => pixelCamera.refResolutionX = x, Screen.width, vignetteTransitionDuration);
+        DOTween.To(() => pixelCamera.refResolutionY, (x) => pixelCamera.refResolutionY = x, Screen.height, vignetteTransitionDuration);
+    }
 
-        void _LerpUIOffscreen()
-        {
-            float hackDistance = 10f;
-            Vector3 uiPosition = angelDemonRoot.position;
-            angelDemonRoot.DOMove(uiPosition + Vector3.up * hackDistance, vignetteTransitionDuration);
+    //-----------------------------------------------------------------------------
+    void LerpUIOnscreen()
+    {
+        float hackDistance = 10f;
+        Vector3 uiPosition = angelDemonRoot.position;
+        angelDemonRoot.DOMove(uiPosition + Vector3.down * hackDistance, vignetteTransitionDuration);
 
-            Vector3 playerRootUIPosition = playerNPCRoot.position;
-            playerNPCRoot.DOMove((playerRootUIPosition - Vector3.up * hackDistance), vignetteTransitionDuration);
+        Vector3 playerRootUIPosition = playerNPCRoot.position;
+        playerNPCRoot.DOMove((playerRootUIPosition - Vector3.down * hackDistance), vignetteTransitionDuration);
 
-            DOTween.To(() => pixelCamera.refResolutionX, (x) => pixelCamera.refResolutionX = x, Screen.width, vignetteTransitionDuration);
-            DOTween.To(() => pixelCamera.refResolutionY, (x) => pixelCamera.refResolutionY = x, Screen.height, vignetteTransitionDuration);
-        }
+        (int newWidth, int newHeight) = GetPreferredPixelResolution();
+        DOTween.To(() => pixelCamera.refResolutionX, (x) => pixelCamera.refResolutionX = x, newWidth, vignetteTransitionDuration);
+        DOTween.To(() => pixelCamera.refResolutionY, (x) => pixelCamera.refResolutionY = x, newHeight, vignetteTransitionDuration);
     }
 }
