@@ -17,7 +17,6 @@ public class InkManager : MonoBehaviour
 
     void Start()
     {
-        //StartStory();
     }
 
     public bool _started = false;
@@ -28,7 +27,7 @@ public class InkManager : MonoBehaviour
         Debug.Log("ink error: " + type.ToString() + " - " + message);
     }
 
-    public void StartStory()
+    public void LoadStory()
     {
         _story = new Story(_inkJsonAsset.text);
 
@@ -54,6 +53,12 @@ public class InkManager : MonoBehaviour
         }
         Debug.Log("------------------------------");
 
+        // set up state management
+        storyState = _story.variablesState;
+    }
+
+    public void StartStory()
+    {
         if (OnCreateStory != null)
         {
             OnCreateStory(_story);
@@ -119,10 +124,37 @@ public class InkManager : MonoBehaviour
         }
     }
 
+    // write state variables from external to internal state
+    public void WriteStateVariables(Dictionary<string, object> externalStoryState)
+    {
+        Debug.Log("writing global story state to ink script state machine");
+        foreach (KeyValuePair<string, object> kvp in externalStoryState)
+        {
+            Debug.LogFormat("  Key = {0}, Value = {1}", kvp.Key, kvp.Value);
+            if (storyState.GlobalVariableExistsWithName(kvp.Key))
+            {
+                storyState[kvp.Key] = kvp.Value;
+            }
+        }
+    }
+
+    // read state variables from internal state and store externally
+    public void ReadStateVariables(Dictionary<string, object> externalStoryState)
+    {
+        Debug.Log("reading global story state to ink script state machine");
+        foreach (string key in storyState)
+        {
+            object value = storyState[key];
+            Debug.LogFormat("  Key = {0}, Value = {1}", key, value);
+            externalStoryState[key] = value;
+        }
+    }
+
     public event Action<Story> OnCreateStory;
     public event Action<string> OnTextLine;
     public event Action< List<Ink.Runtime.Choice> > OnChoices;
     public event Action OnFinishStory;
+    private VariablesState storyState;
 
     [SerializeField]
     private TextAsset _inkJsonAsset = null;

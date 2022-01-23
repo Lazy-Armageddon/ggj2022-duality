@@ -151,6 +151,17 @@
                 },
                 {
                     "name": "",
+                    "id": "e5c33e72-1730-4711-8468-b573a4b8f6c0",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "d7b34c54-10ba-42c8-be99-4176a2e0b62c",
                     "path": "<Keyboard>/c",
                     "interactions": "",

@@ -1,23 +1,24 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-    [FormerlySerializedAs("tempVignetteInstance1")]
     [Header("Temp Debug")]
     public VignetteData tempVignetteDataInstance1;
-    [FormerlySerializedAs("tempVignetteInstance2")] public VignetteData tempVignetteDataInstance2;
 
     [Header("Dialogue")]
     private InkManager activeInkManager;
     private DialogManager dialogManager;
     private GameObject player;
     private GameObject[] npcs;
+    private Dictionary<string, object> storyState = new Dictionary<string, object>();
 
-    [FormerlySerializedAs("cameraManager")]
     [Header("Misc")]
     public VignetteManager vignetteManager;
+    public GameObject purgatoryBridge1;
 
     //-----------------------------------------------------------------------------
     void Awake()
@@ -34,6 +35,8 @@ public class GameManager : MonoBehaviour
         if (!dialogManager) { Debug.Log("warning: could not find 'DialogManager'"); }
         if (!player) { Debug.Log("warning: could not find 'Player'"); }
         if (npcs == null) { Debug.Log("warning: could not find any GameObjects tagged \"npc\""); }
+
+        StartCoroutine(DebugUpdate());
     }
 
     //-----------------------------------------------------------------------------
@@ -44,11 +47,36 @@ public class GameManager : MonoBehaviour
         {
             TryTalkNPC(npc);
         }
+    }
 
-        // TEMP DEBUG - do this in response to dialogue
-        if (Input.GetKeyDown(KeyCode.T))
+    //-----------------------------------------------------------------------------
+    IEnumerator DebugUpdate()
+    {
+        // test go to vignette
+        while (true)
         {
-            vignetteManager.StartVignette(tempVignetteDataInstance1);
+            // TEMP DEBUG - do this in response to dialogue
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                vignetteManager.StartVignette(tempVignetteDataInstance1);
+                break;
+            }
+            yield return null;
+        }
+
+        yield return null;
+
+        // test return from vignette
+        while (true)
+        {
+            // TEMP DEBUG - do this in response to dialogue
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                vignetteManager.StopVignette();
+                purgatoryBridge1.SetActive(true);
+                break;
+            }
+            yield return null;
         }
     }
 
@@ -117,20 +145,47 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // all clear -- start the story! (and disable player input)
+        // all clear to begin starting the story
         HookUpInkManager(ink);
+
+        // load the story
+        ink.LoadStory();
+
+        // todo -- provide global state variables
+        ink.WriteStateVariables(storyState);
+
+        // start the story
         ink.StartStory();
+
+        // disable player input
         var playerInput = player.GetComponent<PlayerInput>();
         playerInput.enabled = false;
     }
 
     void OnFinishStory()
     {
+        // wrap up story details
+        if (activeInkManager != null)
+        {
+            // todo: pull out story variables
+            activeInkManager.ReadStateVariables(storyState);
+
+            // unhook callbacks
+            UnhookInkManager(activeInkManager);
+        }
+
+        // let player move again
         if (player != null)
         {
             var playerInput = player.GetComponent<PlayerInput>();
             playerInput.enabled = true;
-            UnhookInkManager(activeInkManager);
+        }
+
+        // try trigger special story events
+        if (storyState["vignette"] is bool && (bool)storyState["vignette"])
+        {
+            storyState["vignette"] = false;
+            vignetteManager.StartVignette(tempVignetteDataInstance1);
         }
     }
 }
