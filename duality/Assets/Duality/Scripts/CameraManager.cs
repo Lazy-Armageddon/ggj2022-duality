@@ -1,8 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.U2D;
 
@@ -10,6 +8,7 @@ public class CameraManager : MonoBehaviour
 {
     [Header("Player")]
     public Transform player;
+    public PlayerInput playerInput;
 
     [FormerlySerializedAs("cameraController")]
     [Header("Camera")]
@@ -18,6 +17,7 @@ public class CameraManager : MonoBehaviour
 
     [Header("Vignette")]
     public Transform vignettePlayerStart;
+    public Transform vignetteCameraStart;
     public float vignetteTransitionDuration = 1.5f;
     public AudioClip vignetteStartSound;
     public AudioClip vignetteMusic;
@@ -59,7 +59,7 @@ public class CameraManager : MonoBehaviour
         {
             // Warp the player to vignette location once out of camera view
             var sequence = DOTween.Sequence();
-            sequence.AppendInterval(vignetteTransitionDuration * 0.5f);
+            sequence.AppendInterval(vignetteTransitionDuration * 0.6f);
             sequence.Append(player.DOMove(vignettePlayerStart.position, 0f));
         }
 
@@ -67,9 +67,10 @@ public class CameraManager : MonoBehaviour
         {
             Camera camera = cameraFollow.GetComponent<Camera>();
             cameraFollow.enabled = false;
+            playerInput.enabled = false;
 
             // We want to go to where the player is but maintain our z value
-            var newCameraPosition = vignettePlayerStart.position;
+            var newCameraPosition = vignetteCameraStart.position;
             newCameraPosition.z = camera.transform.position.z;
 
             // Lerp the camera through the clouds to the vignette area
@@ -82,6 +83,7 @@ public class CameraManager : MonoBehaviour
             sequence.OnComplete((() =>
             {
                 cameraFollow.enabled = true;
+                playerInput.enabled = true;
             }));
         }
 
