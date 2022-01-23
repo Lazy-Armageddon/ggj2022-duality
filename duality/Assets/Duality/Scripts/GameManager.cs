@@ -7,8 +7,7 @@ public class GameManager : MonoBehaviour
     private InkManager activeInkManager;
     private DialogManager dialogManager;
     private GameObject player;
-    private GameObject npc1;
-    private GameObject npc2;
+    private GameObject[] npcs;
 
     //-----------------------------------------------------------------------------
     void Awake()
@@ -16,14 +15,15 @@ public class GameManager : MonoBehaviour
         // look for special game objects automatically (managers etc)
         dialogManager = GameObject.Find("DialogManager")?.GetComponent<DialogManager>();
         player = GameObject.Find("Player");
-        npc1 = GameObject.Find("NPC");
-        npc2 = GameObject.Find("NPC2");
+        if (npcs == null)
+        {
+            npcs = GameObject.FindGameObjectsWithTag("Enemy");
+        }
 
         // warn about those that could not be find
         if (!dialogManager) { Debug.Log("warning: could not find 'DialogManager'"); }
         if (!player) { Debug.Log("warning: could not find 'Player'"); }
-        if (!npc1) { Debug.Log("warning: could not find 'NPC'"); }
-        if (!npc2) { Debug.Log("warning: could not find 'NPC2'"); }
+        if (npcs == null) { Debug.Log("warning: could not find any GameObjects tagged \"npc\""); }
     }
 
     void HookUpInkManager(InkManager ink)
@@ -69,9 +69,11 @@ public class GameManager : MonoBehaviour
     //-----------------------------------------------------------------------------
     void Update()
     {
-        // if player gets within range of either NPC, start story
-        TryTalkNPC(npc1);
-        TryTalkNPC(npc2);
+        // if player gets within range of any NPC, start story
+        foreach (GameObject npc in npcs)
+        {
+            TryTalkNPC(npc);
+        }
     }
 
     void TryTalkNPC(GameObject npc)
