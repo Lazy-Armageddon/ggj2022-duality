@@ -465,7 +465,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _started: 0
-  _inkJsonAsset: {fileID: 4900000, guid: d3d7aed451b92a6499910640db428691, type: 3}
+  _inkJsonAsset: {fileID: 4900000, guid: d34ad85389c4d6848ac040f85f8c8c91, type: 3}
 --- !u!1001 &155005121
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3526,6 +3526,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c948c0acdc63654f9ad7d6f5e92aa84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tempVignetteDataInstance1: {fileID: 0}
+  tempVignetteDataInstance2: {fileID: 0}
+  vignetteManager: {fileID: 0}
 --- !u!4 &1494376428
 Transform:
   m_ObjectHideFlags: 0
@@ -4765,7 +4768,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _started: 0
-  _inkJsonAsset: {fileID: 4900000, guid: 58c032099cf5a544c92f25ae90f47dfa, type: 3}
+  _inkJsonAsset: {fileID: 4900000, guid: 43e61159e4d783d42b52608d99fabc80, type: 3}
 --- !u!1 &2011287913
 GameObject:
   m_ObjectHideFlags: 0
