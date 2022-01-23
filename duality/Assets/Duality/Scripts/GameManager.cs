@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -10,7 +11,6 @@ public class GameManager : MonoBehaviour
 
     [Header ("Camera")]
     public CameraFollow cameraController;
-    public Transform vignetteCameraStart;
     public float vignetteTransitionDuration = 1.5f;
 
     //-----------------------------------------------------------------------------
@@ -19,36 +19,33 @@ public class GameManager : MonoBehaviour
         // DEBUG
         if (Input.GetKeyDown(KeyCode.T))
         {
-            StartCoroutine(StartVignette());
+            StartVignette();
         }
     }
 
     //-----------------------------------------------------------------------------
-    IEnumerator StartVignette()
+    void StartVignette()
     {
-        cameraController.enabled = false;
-        float timeElapsed = 0f;
+        // Warp the player to vignette location once out of camera view
+        var sequence = DOTween.Sequence();
+        sequence.AppendInterval(vignetteTransitionDuration * 0.6f);
+        sequence.Append(player.DOMove(vignettePlayerStart.position, 0f));
+
         Camera camera = cameraController.GetComponent<Camera>();
-        Vector3 startPos = camera.transform.position;
+        cameraController.enabled = false;
 
-        StartCoroutine(TeleportPlayerAfterDelay(vignetteTransitionDuration / 2f));
+        // We want to go to where the player is but maintain our z value
+        var newCameraPosition = vignettePlayerStart.position;
+        newCameraPosition.z = camera.transform.position.z;
 
-        while (timeElapsed < vignetteTransitionDuration)
+        // Lerp the camera through the clouds to the vignette area
+        var cameraTween = camera.transform.DOMove(newCameraPosition, vignetteTransitionDuration);
+        // cameraTween.SetEase(Ease.InCubic); //<-- change interpolation type
+
+        // restore camera control when done
+        cameraTween.OnComplete((() =>
         {
-            float alpha = timeElapsed / vignetteTransitionDuration;
-            camera.transform.position = Vector3.Lerp(startPos, vignetteCameraStart.position, alpha);
-            yield return null;
-
-            timeElapsed += Time.deltaTime;
-        }
-
-        camera.transform.position = vignetteCameraStart.position;
-    }
-
-    //-----------------------------------------------------------------------------
-    IEnumerator TeleportPlayerAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        player.position = vignettePlayerStart.position;
+            cameraController.enabled = true;
+        }));
     }
 }
