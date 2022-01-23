@@ -4079,6 +4079,7 @@ MonoBehaviour:
   vignettePlayerStart: {fileID: 1893215871}
   vignetteTransitionDuration: 7
   vignetteStartSound: {fileID: 8300000, guid: d47e2024f7ca6094fb079ba6234b0137, type: 3}
+  vignetteMusic: {fileID: 8300000, guid: ec1b77e0190b79f4ea5a9d36faa94537, type: 3}
   angelDemonRoot: {fileID: 529307112}
   playerNPCRoot: {fileID: 1865415204}
 --- !u!82 &1353689969
@@ -4090,7 +4091,7 @@ AudioSource:
   m_GameObject: {fileID: 1353689965}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 1082671548866985381, guid: 6134eda3abd80fe48b57572316085786, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -5115,7 +5116,7 @@ SpriteShapeRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 0
+  m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -5782,7 +5783,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1893215870}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.092902, y: 29.11534, z: 0}
+  m_LocalPosition: {x: 3.092902, y: 24.90521, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
