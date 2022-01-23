@@ -17,8 +17,11 @@ public class InkManager : MonoBehaviour
 
     void Start()
     {
-        StartStory();
+        //StartStory();
     }
+
+    public bool _started = false;
+    public bool StoryStarted { get { return _started; }}
 
     public void StartStory()
     {
@@ -29,6 +32,8 @@ public class InkManager : MonoBehaviour
         }
 
         AdvanceStory();
+
+        _started = true;
     }
 
     public void AdvanceStory()

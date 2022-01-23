@@ -251,6 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11e316d6b783afe40afa47116de73715, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _started: 0
   _inkJsonAsset: {fileID: 4900000, guid: d3d7aed451b92a6499910640db428691, type: 3}
 --- !u!1001 &155005121
 PrefabInstance:
@@ -333,6 +334,11 @@ PrefabInstance:
       objectReference: {fileID: 1782387028}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50936cccdb69523458c1b42052ebafff, type: 3}
+--- !u!4 &155005122 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4660076192433278, guid: 50936cccdb69523458c1b42052ebafff, type: 3}
+  m_PrefabInstance: {fileID: 155005121}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &291557601
 GameObject:
   m_ObjectHideFlags: 0
@@ -3749,6 +3755,8 @@ GameObject:
   - component: {fileID: 1782387029}
   - component: {fileID: 1782387028}
   - component: {fileID: 1782387027}
+  - component: {fileID: 1782387030}
+  - component: {fileID: 1782387031}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3822,6 +3830,43 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1782387030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1782387026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59d11666ee1aeff4dbb0ae6b9f495a22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FollowSpeed: 5
+  Target: {fileID: 155005122}
+  shakeDuration: 0
+  shakeAmount: 0.1
+  decreaseFactor: 1
+--- !u!114 &1782387031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1782387026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a160d838ff8b4b4693ac20007e008c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AssetsPPU: 75
+  m_RefResolutionX: 1900
+  m_RefResolutionY: 600
+  m_UpscaleRT: 0
+  m_PixelSnapping: 1
+  m_CropFrameX: 1
+  m_CropFrameY: 1
+  m_StretchFill: 0
 --- !u!1 &1808311978
 GameObject:
   m_ObjectHideFlags: 0
