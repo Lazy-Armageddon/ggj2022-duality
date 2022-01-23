@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -32,6 +33,7 @@ public class GameManager : MonoBehaviour
 
             inkManager.OnChoices += dialogManager.OnChoices;
             inkManager.OnFinishStory += dialogManager.OnFinishStory;
+            inkManager.OnFinishStory += OnFinishStory;
         }
     }
 
@@ -54,8 +56,20 @@ public class GameManager : MonoBehaviour
                 if (!inkManager.StoryStarted)
                 {
                     inkManager.StartStory();
+                    var playerInput = player.GetComponent<PlayerInput>();
+                    playerInput.enabled = false;
+                    //playerInput.DeactivateInput();
                 }
             }
+        }
+    }
+
+    void OnFinishStory()
+    {
+        if (player != null)
+        {
+            var playerInput = player.GetComponent<PlayerInput>();
+            playerInput.enabled = true;
         }
     }
 }
