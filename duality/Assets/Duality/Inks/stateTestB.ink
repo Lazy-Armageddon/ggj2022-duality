@@ -1,13 +1,11 @@
 VAR name = "Paul"
-VAR health = 100
+VAR vignette = false
 
-Once upon a time...
+-> start
 
-How is it going, {name}?
-Your health is {health}.
-
- * There were two choices.
- * There were four lines of content.
- 
-- They lived happily ever after.
-    -> END
+=== start ===
+Frank: I am the second NPC.
+Frank: I heard you are {name} -- nice to meet you.
+Frank: Tell me about...your past.
+~vignette = true
+-> END

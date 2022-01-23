@@ -131,7 +131,10 @@ public class InkManager : MonoBehaviour
         foreach (KeyValuePair<string, object> kvp in externalStoryState)
         {
             Debug.LogFormat("  Key = {0}, Value = {1}", kvp.Key, kvp.Value);
-            storyState[kvp.Key] = kvp.Value;
+            if (storyState.GlobalVariableExistsWithName(kvp.Key))
+            {
+                storyState[kvp.Key] = kvp.Value;
+            }
         }
     }
 

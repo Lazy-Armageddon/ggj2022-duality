@@ -49,7 +49,6 @@ public class GameManager : MonoBehaviour
         {
             TryTalkNPC(npc);
         }
-
     }
 
     //-----------------------------------------------------------------------------
@@ -176,12 +175,18 @@ public class GameManager : MonoBehaviour
             UnhookInkManager(activeInkManager);
         }
 
-
         // let player move again
         if (player != null)
         {
             var playerInput = player.GetComponent<PlayerInput>();
             playerInput.enabled = true;
+        }
+
+        // try trigger special story events
+        if (storyState["vignette"] is bool && (bool)storyState["vignette"])
+        {
+            storyState["vignette"] = false;
+            vignetteManager.StartVignette(tempVignetteDataInstance1);
         }
     }
 }
