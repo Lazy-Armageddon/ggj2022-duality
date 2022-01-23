@@ -127,13 +127,24 @@ public class InkManager : MonoBehaviour
     // write state variables from external to internal state
     public void WriteStateVariables(Dictionary<string, object> externalStoryState)
     {
-        //
+        Debug.Log("writing global story state to ink script state machine");
+        foreach (KeyValuePair<string, object> kvp in externalStoryState)
+        {
+            Debug.LogFormat("  Key = {0}, Value = {1}", kvp.Key, kvp.Value);
+            storyState[kvp.Key] = kvp.Value;
+        }
     }
 
     // read state variables from internal state and store externally
     public void ReadStateVariables(Dictionary<string, object> externalStoryState)
     {
-        //
+        Debug.Log("reading global story state to ink script state machine");
+        foreach (string key in storyState)
+        {
+            object value = storyState[key];
+            Debug.LogFormat("  Key = {0}, Value = {1}", key, value);
+            externalStoryState[key] = value;
+        }
     }
 
     public event Action<Story> OnCreateStory;

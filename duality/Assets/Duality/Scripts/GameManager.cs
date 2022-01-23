@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     private DialogManager dialogManager;
     private GameObject player;
     private GameObject[] npcs;
-    private Dictionary<string, object> storyState;
+    private Dictionary<string, object> storyState = new Dictionary<string, object>();
 
     [FormerlySerializedAs("cameraManager")]
     [Header("Misc")]
