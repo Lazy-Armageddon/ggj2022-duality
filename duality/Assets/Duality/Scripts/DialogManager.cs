@@ -23,10 +23,7 @@ public class DialogManager : MonoBehaviour
 
     void Start()
     {
-        // clear whatever we may have had from before
-        //RemoveChildren(canvas);
-        //RemoveChildren(goodPanel);
-        //RemoveChildren(badPanel);
+        // note: do NOT clear scene elements here! (May have already started a story...)
     }
 
     public void OnChoices(List<Ink.Runtime.Choice> choices)
@@ -107,7 +104,9 @@ public class DialogManager : MonoBehaviour
 
         // Creates the button from a prefab
         Button choice = Instantiate(buttonPrefab) as Button;
-        choice.transform.SetParent(canvas.transform, false);
+        //GameObject target = canvas;
+        GameObject target = goodPanel;
+        choice.transform.SetParent(target.transform, false);
 
         // Gets the text from the button prefab
         Text choiceText = choice.GetComponentInChildren<Text>();
@@ -145,6 +144,16 @@ public class DialogManager : MonoBehaviour
         {
             OnAdvanceStory();
         }
+    }
+
+    public void OnFinishStory()
+    {
+        RemoveChildren(goodPanel);
+        RemoveChildren(badPanel);
+        //Button choice = CreateChoiceView("End of story.\nRestart?");
+        //choice.onClick.AddListener(delegate {
+        //    StartStory();
+        //});
     }
 
     public event Action OnAdvanceStory;

@@ -20,7 +20,7 @@ public class InkManager : MonoBehaviour
         StartStory();
     }
 
-    private void StartStory()
+    public void StartStory()
     {
         _story = new Story(_inkJsonAsset.text);
         if (OnCreateStory != null)
@@ -60,6 +60,7 @@ public class InkManager : MonoBehaviour
         {
             // we've read all the content and there's no choices
             // the story is finished!
+            FinishStory();
 
             /*
             Button choice = CreateChoiceView("End of story.\nRestart?");
@@ -77,9 +78,18 @@ public class InkManager : MonoBehaviour
         AdvanceStory();
     }
 
+    void FinishStory()
+    {
+        if (OnFinishStory != null)
+        {
+            OnFinishStory();
+        }
+    }
+
     public event Action<Story> OnCreateStory;
     public event Action<string> OnTextLine;
     public event Action< List<Ink.Runtime.Choice> > OnChoices;
+    public event Action OnFinishStory;
 
     [SerializeField]
     private TextAsset _inkJsonAsset = null;

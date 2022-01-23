@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
             dialogManager.OnSelectChoice += inkManager.OnClickChoiceButton;
 
             inkManager.OnChoices += dialogManager.OnChoices;
+            inkManager.OnFinishStory += dialogManager.OnFinishStory;
         }
     }
 
