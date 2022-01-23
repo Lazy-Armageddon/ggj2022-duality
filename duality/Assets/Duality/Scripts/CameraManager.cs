@@ -20,6 +20,7 @@ public class CameraManager : MonoBehaviour
     public Transform vignettePlayerStart;
     public float vignetteTransitionDuration = 1.5f;
     public AudioClip vignetteStartSound;
+    public AudioClip vignetteMusic;
 
     [Header("UI")]
     public Transform angelDemonRoot;
@@ -49,7 +50,10 @@ public class CameraManager : MonoBehaviour
         _LerpCameraToNewLocation();
         _LerpUIOffscreen();
 
-        GetComponent<AudioSource>().PlayOneShot(vignetteStartSound);
+        AudioSource audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(vignetteStartSound);
+        audioSource.clip = vignetteMusic;
+        audioSource.Play();
 
         void _WarpPlayerToNewLocation()
         {
