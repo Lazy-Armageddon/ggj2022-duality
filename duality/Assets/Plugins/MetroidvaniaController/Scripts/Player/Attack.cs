@@ -29,7 +29,7 @@ public class Attack : MonoBehaviour {
 	}
 
 	private void OnRangedAttack() {
-		wantsToRangedAttack = true;
+		// wantsToRangedAttack = true;
 	}
 
 // Update is called once per frame
@@ -45,9 +45,9 @@ public class Attack : MonoBehaviour {
 
 		if (wantsToRangedAttack) {
 			wantsToRangedAttack = false;
-			GameObject throwableWeapon = Instantiate(throwableObject, transform.position + new Vector3(transform.localScale.x * 0.5f,-0.2f), Quaternion.identity) as GameObject; 
+			GameObject throwableWeapon = Instantiate(throwableObject, transform.position + new Vector3(transform.localScale.x * 0.5f,-0.2f), Quaternion.identity) as GameObject;
 			Vector2 direction = new Vector2(transform.localScale.x, 0);
-			throwableWeapon.GetComponent<ThrowableWeapon>().direction = direction; 
+			throwableWeapon.GetComponent<ThrowableWeapon>().direction = direction;
 			throwableWeapon.name = "ThrowableWeapon";
 		}
 	}
