@@ -56,25 +56,16 @@ public class GameManager : MonoBehaviour
         while (true)
         {
             // TEMP DEBUG - do this in response to dialogue
-            if (Input.GetKeyDown(KeyCode.T))
+            if (Input.GetKeyDown(KeyCode.Alpha0))
             {
                 vignetteManager.StartVignette(tempVignetteDataInstance1);
-                break;
             }
-            yield return null;
-        }
 
-        yield return null;
-
-        // test return from vignette
-        while (true)
-        {
             // TEMP DEBUG - do this in response to dialogue
-            if (Input.GetKeyDown(KeyCode.T))
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 vignetteManager.StopVignette();
                 purgatoryBridge1.SetActive(true);
-                break;
             }
             yield return null;
         }
