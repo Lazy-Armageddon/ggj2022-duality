@@ -10,16 +10,20 @@ public class CameraManager : MonoBehaviour
 {
     [Header("Player")]
     public Transform player;
-    public Transform vignettePlayerStart;
 
     [FormerlySerializedAs("cameraController")]
     [Header("Camera")]
     public CameraFollow cameraFollow;
     public PixelPerfectCamera pixelCamera;
+
+    [Header("Vignette")]
+    public Transform vignettePlayerStart;
     public float vignetteTransitionDuration = 1.5f;
+    public AudioClip vignetteStartSound;
 
     [Header("UI")]
     public Transform angelDemonRoot;
+    public Transform playerNPCRoot;
 
     //-----------------------------------------------------------------------------
     private void Start()
@@ -45,11 +49,13 @@ public class CameraManager : MonoBehaviour
         _LerpCameraToNewLocation();
         _LerpUIOffscreen();
 
+        GetComponent<AudioSource>().PlayOneShot(vignetteStartSound);
+
         void _WarpPlayerToNewLocation()
         {
             // Warp the player to vignette location once out of camera view
             var sequence = DOTween.Sequence();
-            sequence.AppendInterval(vignetteTransitionDuration * 0.6f);
+            sequence.AppendInterval(vignetteTransitionDuration * 0.5f);
             sequence.Append(player.DOMove(vignettePlayerStart.position, 0f));
         }
 
@@ -63,11 +69,13 @@ public class CameraManager : MonoBehaviour
             newCameraPosition.z = camera.transform.position.z;
 
             // Lerp the camera through the clouds to the vignette area
-            var cameraTween = camera.transform.DOMove(newCameraPosition, vignetteTransitionDuration);
+            var sequence = DOTween.Sequence();
+            sequence.AppendInterval(0.25f);
+            sequence.Append(camera.transform.DOMove(newCameraPosition, vignetteTransitionDuration));
             // cameraTween.SetEase(Ease.InCubic); //<-- change interpolation type
 
             // restore camera control when done
-            cameraTween.OnComplete((() =>
+            sequence.OnComplete((() =>
             {
                 cameraFollow.enabled = true;
             }));
@@ -75,8 +83,15 @@ public class CameraManager : MonoBehaviour
 
         void _LerpUIOffscreen()
         {
+            float hackDistance = 10f;
             Vector3 uiPosition = angelDemonRoot.position;
-            angelDemonRoot.DOMove(uiPosition + Vector3.up * 20f, vignetteTransitionDuration);
+            angelDemonRoot.DOMove(uiPosition + Vector3.up * hackDistance, vignetteTransitionDuration);
+
+            Vector3 playerRootUIPosition = playerNPCRoot.position;
+            playerNPCRoot.DOMove((playerRootUIPosition - Vector3.up * hackDistance), vignetteTransitionDuration);
+
+            DOTween.To(() => pixelCamera.refResolutionX, (x) => pixelCamera.refResolutionX = x, Screen.width, vignetteTransitionDuration);
+            DOTween.To(() => pixelCamera.refResolutionY, (x) => pixelCamera.refResolutionY = x, Screen.height, vignetteTransitionDuration);
         }
     }
 }
