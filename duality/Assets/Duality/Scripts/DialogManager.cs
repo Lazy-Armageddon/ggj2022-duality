@@ -9,6 +9,16 @@ using System.IO;
 
 public class DialogManager : MonoBehaviour
 {
+    bool debug = false;
+
+    void DebugMsg(string msg)
+    {
+        if (debug)
+        {
+            Debug.Log(msg);
+        }
+    }
+
     // called before Start()
     void Awake()
     {
@@ -28,7 +38,7 @@ public class DialogManager : MonoBehaviour
 
     public void OnChoices(List<Ink.Runtime.Choice> choices)
     {
-        Debug.Log("DialogManager.OnChoices(...)");
+        DebugMsg("DialogManager.OnChoices(...)");
 
         // clear whatever we may have had from before
         //RemoveChildren(canvas);
@@ -58,7 +68,7 @@ public class DialogManager : MonoBehaviour
 
     public void OnTextLine(string text)
     {
-        Debug.Log("DialogManager.OnTextLine(" + text + ")");
+        DebugMsg("DialogManager.OnTextLine(" + text + ")");
 
         // clear whatever we may have had from before
         //RemoveChildren(canvas);
@@ -82,7 +92,7 @@ public class DialogManager : MonoBehaviour
     // Creates a textbox showing the the line of text
     void CreateContentView(string text)
     {
-        Debug.Log("DialogManager.CreateContentView(" + text + ")");
+        DebugMsg("DialogManager.CreateContentView(" + text + ")");
 
         Text storyText = Instantiate(textPrefab) as Text;
         storyText.text = text;
@@ -100,7 +110,7 @@ public class DialogManager : MonoBehaviour
     // Creates a button showing the choice text
     Button CreateChoiceView(string text)
     {
-        Debug.Log("DialogManager.CreateChoiceView(" + text + ")");
+        DebugMsg("DialogManager.CreateChoiceView(" + text + ")");
 
         // Creates the button from a prefab
         Button choice = Instantiate(buttonPrefab) as Button;
@@ -135,7 +145,7 @@ public class DialogManager : MonoBehaviour
             GameObject.Destroy(target.transform.GetChild(i).gameObject);
         }
 
-        Debug.Log("DialogManager.RemoveChildren() did the thing for " + target.name);
+        DebugMsg("DialogManager.RemoveChildren() did the thing for " + target.name);
     }
 
     void AdvanceStory()
