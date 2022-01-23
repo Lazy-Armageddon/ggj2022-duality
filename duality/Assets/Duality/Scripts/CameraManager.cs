@@ -20,6 +20,7 @@ public class CameraManager : MonoBehaviour
 
     [Header("UI")]
     public Transform angelDemonRoot;
+    public Transform playerNPCRoot;
 
     //-----------------------------------------------------------------------------
     private void Start()
@@ -49,7 +50,7 @@ public class CameraManager : MonoBehaviour
         {
             // Warp the player to vignette location once out of camera view
             var sequence = DOTween.Sequence();
-            sequence.AppendInterval(vignetteTransitionDuration * 0.6f);
+            sequence.AppendInterval(vignetteTransitionDuration * 0.5f);
             sequence.Append(player.DOMove(vignettePlayerStart.position, 0f));
         }
 
@@ -75,8 +76,15 @@ public class CameraManager : MonoBehaviour
 
         void _LerpUIOffscreen()
         {
+            float hackDistance = 10f;
             Vector3 uiPosition = angelDemonRoot.position;
-            angelDemonRoot.DOMove(uiPosition + Vector3.up * 20f, vignetteTransitionDuration);
+            angelDemonRoot.DOMove(uiPosition + Vector3.up * hackDistance, vignetteTransitionDuration);
+
+            Vector3 playerRootUIPosition = playerNPCRoot.position;
+            playerNPCRoot.DOMove((playerRootUIPosition - Vector3.up * hackDistance), vignetteTransitionDuration);
+
+            DOTween.To(() => pixelCamera.refResolutionX, (x) => pixelCamera.refResolutionX = x, Screen.width, vignetteTransitionDuration);
+            DOTween.To(() => pixelCamera.refResolutionY, (x) => pixelCamera.refResolutionY = x, Screen.height, vignetteTransitionDuration);
         }
     }
 }
