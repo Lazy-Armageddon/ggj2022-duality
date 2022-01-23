@@ -52,13 +52,13 @@ public class InkManager : MonoBehaviour
             Debug.Log("no warnings -- great!");
         }
         Debug.Log("------------------------------");
+
+        // set up state management
+        storyState = _story.variablesState;
     }
 
     public void StartStory()
     {
-        // set up state management
-        storyState = _story.variablesState;
-
         if (OnCreateStory != null)
         {
             OnCreateStory(_story);
