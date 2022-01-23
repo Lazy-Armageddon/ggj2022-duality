@@ -1,13 +1,23 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
+    [FormerlySerializedAs("tempVignetteInstance1")]
+    [Header("Temp Debug")]
+    public VignetteData tempVignetteDataInstance1;
+    [FormerlySerializedAs("tempVignetteInstance2")] public VignetteData tempVignetteDataInstance2;
+
     [Header("Dialogue")]
     private InkManager activeInkManager;
     private DialogManager dialogManager;
     private GameObject player;
     private GameObject[] npcs;
+
+    [FormerlySerializedAs("cameraManager")]
+    [Header("Misc")]
+    public VignetteManager vignetteManager;
 
     //-----------------------------------------------------------------------------
     void Awake()
@@ -26,6 +36,23 @@ public class GameManager : MonoBehaviour
         if (npcs == null) { Debug.Log("warning: could not find any GameObjects tagged \"npc\""); }
     }
 
+    //-----------------------------------------------------------------------------
+    void Update()
+    {
+        // if player gets within range of any NPC, start story
+        foreach (GameObject npc in npcs)
+        {
+            TryTalkNPC(npc);
+        }
+
+        // TEMP DEBUG - do this in response to dialogue
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            vignetteManager.StartVignette(tempVignetteDataInstance1);
+        }
+    }
+
+    //-----------------------------------------------------------------------------
     void HookUpInkManager(InkManager ink)
     {
         // hook ink manager and dialog manager up with each other
@@ -43,6 +70,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //-----------------------------------------------------------------------------
     void UnhookInkManager(InkManager ink)
     {
         // unhook ink manager and dialog manager from each other
@@ -60,21 +88,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //-----------------------------------------------------------------------------
-    void Start()
-    {
-        //
-    }
-
-    //-----------------------------------------------------------------------------
-    void Update()
-    {
-        // if player gets within range of any NPC, start story
-        foreach (GameObject npc in npcs)
-        {
-            TryTalkNPC(npc);
-        }
-    }
 
     void TryTalkNPC(GameObject npc)
     {

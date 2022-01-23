@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.U2D;
 
-public class CameraManager : MonoBehaviour
+public class VignetteManager : MonoBehaviour
 {
     [Header("Player")]
     public Transform player;
@@ -26,6 +26,8 @@ public class CameraManager : MonoBehaviour
     public Transform angelDemonRoot;
     public Transform playerNPCRoot;
 
+    private VignetteData _currentVignetteData;
+
     //-----------------------------------------------------------------------------
     private void Start()
     {
@@ -34,18 +36,15 @@ public class CameraManager : MonoBehaviour
     }
 
     //-----------------------------------------------------------------------------
-    void Update()
+    public void StartVignette(VignetteData newVignetteData)
     {
-        // DEBUG
-        if (Input.GetKeyDown(KeyCode.T))
+        if (_currentVignetteData)
         {
-            StartVignette();
+            _currentVignetteData.gameObject.SetActive(false);
         }
-    }
+        newVignetteData.gameObject.SetActive(true);
+        _currentVignetteData = newVignetteData;
 
-    //-----------------------------------------------------------------------------
-    void StartVignette()
-    {
         _WarpPlayerToNewLocation();
         _LerpCameraToNewLocation();
         _LerpUIOffscreen();
@@ -60,7 +59,7 @@ public class CameraManager : MonoBehaviour
             // Warp the player to vignette location once out of camera view
             var sequence = DOTween.Sequence();
             sequence.AppendInterval(vignetteTransitionDuration * 0.6f);
-            sequence.Append(player.DOMove(vignettePlayerStart.position, 0f));
+            sequence.Append(player.DOMove(newVignetteData.playerStart.position, 0f));
         }
 
         void _LerpCameraToNewLocation()
@@ -68,9 +67,10 @@ public class CameraManager : MonoBehaviour
             Camera camera = cameraFollow.GetComponent<Camera>();
             cameraFollow.enabled = false;
             playerInput.enabled = false;
+            _currentVignetteData.npc.SetActive(false);
 
             // We want to go to where the player is but maintain our z value
-            var newCameraPosition = vignetteCameraStart.position;
+            var newCameraPosition = newVignetteData.cameraStart.position;
             newCameraPosition.z = camera.transform.position.z;
 
             // Lerp the camera through the clouds to the vignette area
@@ -84,6 +84,7 @@ public class CameraManager : MonoBehaviour
             {
                 cameraFollow.enabled = true;
                 playerInput.enabled = true;
+                _currentVignetteData.npc.SetActive(true);
             }));
         }
 
