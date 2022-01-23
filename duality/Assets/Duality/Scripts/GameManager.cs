@@ -6,10 +6,8 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-    [FormerlySerializedAs("tempVignetteInstance1")]
     [Header("Temp Debug")]
     public VignetteData tempVignetteDataInstance1;
-    [FormerlySerializedAs("tempVignetteInstance2")] public VignetteData tempVignetteDataInstance2;
 
     [Header("Dialogue")]
     private InkManager activeInkManager;
@@ -18,9 +16,9 @@ public class GameManager : MonoBehaviour
     private GameObject[] npcs;
     private Dictionary<string, object> storyState = new Dictionary<string, object>();
 
-    [FormerlySerializedAs("cameraManager")]
     [Header("Misc")]
     public VignetteManager vignetteManager;
+    public GameObject purgatoryBridge1;
 
     //-----------------------------------------------------------------------------
     void Awake()
@@ -76,6 +74,7 @@ public class GameManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.T))
             {
                 vignetteManager.StopVignette();
+                purgatoryBridge1.SetActive(true);
                 break;
             }
             yield return null;
