@@ -5,6 +5,7 @@
 === unknown ===
 Character: I continue on my journey...
 Character: I remember having a life before this.
+Character: What is this place? Purgatory?
 Character: Yesterday... I wonder what Alice meant...
 Character: She wanted to talk.
 
@@ -15,8 +16,7 @@ Character: Like either of you know!
 Character: You only talk with each other and me..
 
 Character: and why can't you agree on anything!
-+ I'm sad
-    -> sad
++[I'm sad] -> sad
 +[think quietly] ->think
 
 
@@ -46,7 +46,7 @@ Character: hmph.
 Character: hmph...
 
 Character: Why am I here.
-Character: You two...I turn toward the angel and demon
+Character: You two...
 
 Character: Why do you two always conflict!!!
 -> ending
@@ -54,9 +54,11 @@ Character: Why do you two always conflict!!!
 === ending ===
 Ghost: Well hello!
 Character: Who goes there???
-Character: Your voice is so different.
-Ghost: Not so much who...maybe what...I go by so many names...
+Character: I can't see them...I think they're off to the right...
 
-Character: I turn to look at the voice.
+
+// Character: Your voice is so different.
+// Ghost: Not so much who...maybe what...I go by so many names...
+// Character: I turn to look at the voice.
 
 ->END
