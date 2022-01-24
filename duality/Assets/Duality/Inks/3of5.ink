@@ -6,7 +6,7 @@ Ghost: well, congfratulations on the $800.
 -I count my money
 Character: thank you.
 
-Ghsot: I have one more question for you...
+Ghost: I have one more question for you...
 
 +answer question -> answer
 +politely decline -> decline
