@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class Enemy : MonoBehaviour {
 
@@ -17,6 +18,8 @@ public class Enemy : MonoBehaviour {
 
 	public bool isInvincible = false;
 	private bool isHitted = false;
+
+	public event Action DestroyAction;
 
 	void Awake () {
 		fallCheck = transform.Find("FallCheck");
@@ -105,5 +108,13 @@ public class Enemy : MonoBehaviour {
 		rb.velocity = new Vector2(0, rb.velocity.y);
 		yield return new WaitForSeconds(3f);
 		Destroy(gameObject);
+	}
+
+	public void OnDestroy()
+	{
+		if (DestroyAction != null)
+		{
+			DestroyAction();
+		}
 	}
 }

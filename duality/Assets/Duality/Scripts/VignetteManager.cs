@@ -27,6 +27,7 @@ public class VignetteManager : MonoBehaviour
     private VignetteData currentVignetteData;
     private Vector3 lastPlayerPurgatoryPosition;
     private Vector3 lastCameraPurgatoryPosition;
+    public GameManager gameManager;
 
     //-----------------------------------------------------------------------------
     private void Start()
@@ -48,6 +49,11 @@ public class VignetteManager : MonoBehaviour
         if (currentVignetteData)
         {
             currentVignetteData.gameObject.SetActive(false);
+            var enemy = currentVignetteData.npc?.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.DestroyAction -= OnNpcDeath;
+            }
         }
         newVignetteData.gameObject.SetActive(true);
         currentVignetteData = newVignetteData;
@@ -55,6 +61,11 @@ public class VignetteManager : MonoBehaviour
         if (currentVignetteData.npc)
         {
             currentVignetteData.npc.gameObject.SetActive(false);
+            var enemy = currentVignetteData.npc?.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.DestroyAction += OnNpcDeath;
+            }
         }
 
         WarpPlayerToNewLocation(newVignetteData.playerStart.position);
@@ -68,9 +79,13 @@ public class VignetteManager : MonoBehaviour
         audioSource.PlayOneShot(vignetteStartSound);
         audioSource.clip = vignetteMusic;
         audioSource.Play();
-
     }
 
+    //-----------------------------------------------------------------------------
+    void OnNpcDeath()
+    {
+        gameManager.InformNpcDeath();
+    }
 
     //-----------------------------------------------------------------------------
     public void StopVignette()

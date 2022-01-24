@@ -30,11 +30,15 @@ public class GameManager : MonoBehaviour
         {
             npcs = GameObject.FindGameObjectsWithTag("Enemy");
         }
-
-        // warn about those that could not be find
+        // warn about those that could not be found
         if (!dialogManager) { Debug.Log("warning: could not find 'DialogManager'"); }
         if (!player) { Debug.Log("warning: could not find 'Player'"); }
         if (npcs == null) { Debug.Log("warning: could not find any GameObjects tagged \"npc\""); }
+
+        if (vignetteManager != null)
+        {
+            vignetteManager.gameManager = this;
+        }
 
         StartCoroutine(DebugUpdate());
     }
@@ -55,6 +59,7 @@ public class GameManager : MonoBehaviour
         // test go to vignette
         while (true)
         {
+            /*
             // TEMP DEBUG - do this in response to dialogue
             if (Input.GetKeyDown(KeyCode.Alpha0))
             {
@@ -67,6 +72,8 @@ public class GameManager : MonoBehaviour
                 vignetteManager.StopVignette();
                 purgatoryBridge1.SetActive(true);
             }
+            //*/
+
             yield return null;
         }
     }
@@ -153,6 +160,12 @@ public class GameManager : MonoBehaviour
         playerInput.enabled = false;
     }
 
+    public void InformNpcDeath()
+    {
+        vignetteManager.StopVignette();
+        purgatoryBridge1.SetActive(true);
+    }
+
     void OnFinishStory()
     {
         // wrap up story details
@@ -173,7 +186,7 @@ public class GameManager : MonoBehaviour
         }
 
         // try trigger special story events
-        if (storyState["vignette"] is bool && (bool)storyState["vignette"])
+        if (storyState.ContainsKey("vignette") && storyState["vignette"] is bool && (bool)storyState["vignette"])
         {
             storyState["vignette"] = false;
             vignetteManager.StartVignette(tempVignetteDataInstance1);

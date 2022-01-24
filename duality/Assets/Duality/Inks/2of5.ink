@@ -1,3 +1,4 @@
+VAR vignette = false
 
 ->purgatory
 
@@ -30,7 +31,9 @@ Dinkleberry: well hello
 Character: DINKLEBERRY YOU OWE ME $800 YOU JACKASS!
 Dinkleberry: TAKE IT FROM ME THEN DINGUS! ILL DESTROY YOU!
 
--The FIGHT BEGINS 
+-The FIGHT BEGINS
+
+~vignette = true
 				
 
 
