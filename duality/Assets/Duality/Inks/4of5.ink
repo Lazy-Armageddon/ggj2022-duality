@@ -29,7 +29,8 @@ Ghost: QUICK HERE COMES THE TROLLEY!
 
 === trolleyGo ===
 -watching helplessly as the trolley goes along it's path
-Character: stop the train! Someone stop the train!
+Character: stop the train! 
+Character: Someone stop the train!
 Ghost: no one is going to stop the train. You must make a decision.
 Character: I WON'T FLIP THE SWITCH!
 

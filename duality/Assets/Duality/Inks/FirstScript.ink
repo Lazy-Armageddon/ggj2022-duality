@@ -3,14 +3,16 @@
 
 
 === unknown ===
-Character: I continue on my journey...same...everyday the same...
-Character: I remember my last day before here.
-Character: I wonder what Alice meant when she wanted to talk
+Character: I continue on my journey...
+Character: I remember my last day before this.
+Character: I wonder what Alice meant...
+Charactar: she wanted to talk
 
 Demon: She was messing with you, there's always something wrong
 Angel: just be sure to do what's right, right now
 
-Character: Like either of you know! You only talk with each other and me..
+Character: Like either of you know! 
+Character: You only talk with each other and me..
 
 Character: and why can't you agree on anything!
 + I'm sad
@@ -25,8 +27,11 @@ Angel: I am only here to advise you and your conscience
     
 Character: hm
 
-Character: I must remind myself that these two aren't a real angel and devil.
-Character: At least not yet, maybe. Their "advice" is often conflicted and vague.
+Character: I must remind myself..
+Character: these two aren't a real angel and devil.
+Character: At least not yet, maybe. 
+Character: Their "advice"..
+Character: is often conflicted and vague.
 
 Angel: just remember you won't be with us forever, do good
 Demon: you could leave soon! Be bad
@@ -53,7 +58,7 @@ Ghost: not so much who...maybe what...I go by so many names...
 
 Character: I turn to look at the voice.
 
-Character: The scene changes
+-The scene changes
 				
 
 
