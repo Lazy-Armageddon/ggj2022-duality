@@ -5,7 +5,10 @@ VAR vignette = false
 
 === purgatory ===
 Ghost: I welcome you to your past
-Character: I remember this! This is when Dinkleberry took my lunch money the first time!
+Character: I remember this! 
+Character This is Dinkleberry!
+Character: When he took my lunch money!
+Character: ...the first time
 Ghost: yes, you gave him your lunch money and so he went to you for lunch money every chance he got.
 
 + I'm mad
@@ -28,7 +31,8 @@ Character: maybe if I ask nicely...
 
 === fight ===
 Dinkleberry: well hello
-Character: DINKLEBERRY YOU OWE ME $800 YOU JACKASS!
+Character: DINKLEBERRY YOU OWE ME $800 
+Character: YOU BLOCKHEAD!
 Dinkleberry: TAKE IT FROM ME THEN DINGUS! ILL DESTROY YOU!
 
 -The FIGHT BEGINS

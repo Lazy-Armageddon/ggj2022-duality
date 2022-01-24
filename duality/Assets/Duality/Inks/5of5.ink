@@ -5,7 +5,8 @@
 Angel: well...wtf was that
 Demon: wtf....
 
-Character: WE ALL CAN AGREE AT LAST. No one knows wtf is going on.
+Character: WE ALL CAN AGREE AT LAST. 
+Character: No one knows wtf is going on.
 
 *keep going forward
     Demon: only thing to do now is continue
@@ -47,7 +48,8 @@ Character: WE ALL CAN AGREE AT LAST. No one knows wtf is going on.
     Angel: we are so sorry sir...this one is out of control
     Demon: what judgement have you?
     Peter: I AM THE JUDGE AND I CONDEM YE ALL TO....
-    Character: JUDGE NOT LEST YE BE JUDGED!!! FREEEEEDOMMMMM!!!!!
+    Character: JUDGE NOT LEST YE BE JUDGED!!! 
+    Character: FREEEEEDOMMMMM!!!!!
     
     ->fight
     
