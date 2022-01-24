@@ -7,9 +7,12 @@ using System.Text;
 using System.IO;
 //using System.Diagnostics;
 using Ink.Runtime;
+using UnityEngine.Events;
 
 public class InkManager : MonoBehaviour
 {
+    public UnityEvent dialogueComplete;
+
     // called before Start()
     void Awake()
     {
@@ -99,6 +102,8 @@ public class InkManager : MonoBehaviour
             // we've read all the content and there's no choices
             // the story is finished!
             FinishStory();
+
+            dialogueComplete?.Invoke();
 
             /*
             Button choice = CreateChoiceView("End of story.\nRestart?");
