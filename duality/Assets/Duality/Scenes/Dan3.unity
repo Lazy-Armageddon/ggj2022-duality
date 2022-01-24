@@ -3602,6 +3602,7 @@ MonoBehaviour:
   vignetteMusic: {fileID: 8300000, guid: ec1b77e0190b79f4ea5a9d36faa94537, type: 3}
   angelDemonRoot: {fileID: 529307112}
   playerNPCRoot: {fileID: 1865415204}
+  gameManager: {fileID: 0}
 --- !u!82 &1353689969
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5093,7 +5094,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4111996881791359411, guid: 9d891e23bc2fadb43b44277f18d9cf4c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d891e23bc2fadb43b44277f18d9cf4c, type: 3}
