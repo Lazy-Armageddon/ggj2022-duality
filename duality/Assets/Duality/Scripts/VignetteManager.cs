@@ -75,7 +75,7 @@ public class VignetteManager : MonoBehaviour
             VignetteLogic logic = newVignetteData.GetComponent<VignetteLogic>();
             if (logic != null)
             {
-                logic.OnVignetteStart();
+                logic.OnVignetteStart(this);
             }
         });
         LerpUIOffscreen();
