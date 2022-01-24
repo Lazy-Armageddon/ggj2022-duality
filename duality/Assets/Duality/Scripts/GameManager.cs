@@ -21,19 +21,24 @@ public class GameManager : MonoBehaviour
     public VignetteManager vignetteManager;
     public GameObject purgatoryBridge1;
 
+    private GameObject vegetation;
+    [SerializeField]
+    private TextAsset _cutGrassInkJsonAsset = null;
+
     //-----------------------------------------------------------------------------
     void Awake()
     {
         // look for special game objects automatically (managers etc)
         dialogManager = GameObject.Find("DialogManager")?.GetComponent<DialogManager>();
-        player = GameObject.Find("Player");
+        player = FindGameObject("Player");
         if (npcs == null)
         {
             npcs = GameObject.FindGameObjectsWithTag("Enemy");
         }
+        vegetation = FindGameObject("Vegetation");
+
         // warn about those that could not be found
         if (!dialogManager) { Debug.Log("warning: could not find 'DialogManager'"); }
-        if (!player) { Debug.Log("warning: could not find 'Player'"); }
         if (npcs == null) { Debug.Log("warning: could not find any GameObjects tagged \"npc\""); }
 
         if (vignetteManager != null)
@@ -45,12 +50,33 @@ public class GameManager : MonoBehaviour
     }
 
     //-----------------------------------------------------------------------------
+    GameObject FindGameObject(string name)
+    {
+        var go = GameObject.Find(name);
+        if (!go) { Debug.Log("warning: could not find GameObject \"" + name + "\""); }
+        return go;
+    }
+
+    //-----------------------------------------------------------------------------
     void Update()
     {
         // if player gets within range of any NPC, start story
         foreach (GameObject npc in npcs)
         {
             TryTalkNPC(npc);
+        }
+
+        // test for vegetation being cut
+        if (vegetation && vegetation.transform.childCount == 0)
+        {
+            if (!GetComponent<InkManager>())
+            {
+                Debug.Log("cut vegetation!");
+
+                var ink = gameObject.AddComponent(typeof(InkManager)) as InkManager;
+                ink._inkJsonAsset = _cutGrassInkJsonAsset;
+                StartInkScript(ink);
+            }
         }
     }
 
@@ -60,7 +86,7 @@ public class GameManager : MonoBehaviour
         // test go to vignette
         while (true)
         {
-            /*
+            //*
             // TEMP DEBUG - do this in response to dialogue
             if (Input.GetKeyDown(KeyCode.Alpha0))
             {
@@ -136,8 +162,13 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // does this npc have an ink manager?
+        // try  this npc have an ink manager?
         var ink = npc.GetComponent<InkManager>();
+        StartInkScript(ink);
+    }
+
+    void StartInkScript(InkManager ink)
+    {
         if (ink == null)
         {
             return;
@@ -201,7 +232,7 @@ public class GameManager : MonoBehaviour
         if (CheckStoryStateBool("vignette2"))
         {
             storyState["vignette2"] = false;
-            vignetteManager.StartVignette(tempVignetteDataInstance1);
+            vignetteManager.StartVignette(tempVignetteDataInstance2);
         }
     }
 

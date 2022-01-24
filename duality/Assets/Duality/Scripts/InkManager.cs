@@ -7,9 +7,12 @@ using System.Text;
 using System.IO;
 //using System.Diagnostics;
 using Ink.Runtime;
+using UnityEngine.Events;
 
 public class InkManager : MonoBehaviour
 {
+    public UnityEvent dialogueComplete;
+
     // called before Start()
     void Awake()
     {
@@ -100,6 +103,8 @@ public class InkManager : MonoBehaviour
             // the story is finished!
             FinishStory();
 
+            dialogueComplete?.Invoke();
+
             /*
             Button choice = CreateChoiceView("End of story.\nRestart?");
             choice.onClick.AddListener(delegate {
@@ -157,6 +162,6 @@ public class InkManager : MonoBehaviour
     private VariablesState storyState;
 
     [SerializeField]
-    private TextAsset _inkJsonAsset = null;
+    public TextAsset _inkJsonAsset = null;
     private Story _story;
 }

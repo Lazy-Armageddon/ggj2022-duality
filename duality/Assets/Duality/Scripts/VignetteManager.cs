@@ -18,6 +18,7 @@ public class VignetteManager : MonoBehaviour
     public float vignetteTransitionDuration = 1.5f;
     public AudioClip vignetteStartSound;
     public AudioClip vignetteMusic;
+    public GameObject purgatoryBridge2HackRef;
 
     [Header("UI")]
     public Transform angelDemonRoot;
@@ -67,7 +68,7 @@ public class VignetteManager : MonoBehaviour
             }
         }
 
-        WarpPlayerToNewLocation(newVignetteData.playerStart.position);
+        WarpPlayerToNewLocation(newVignetteData.playerStart.position, vignetteTransitionDuration * 0.6f);
         LerpCameraToNewLocation(newVignetteData.cameraStart.position, () =>
         {
             currentVignetteData.npc.gameObject.SetActive(true);
@@ -75,7 +76,7 @@ public class VignetteManager : MonoBehaviour
             VignetteLogic logic = newVignetteData.GetComponent<VignetteLogic>();
             if (logic != null)
             {
-                logic.OnVignetteStart();
+                logic.OnVignetteStart(this);
             }
         });
         LerpUIOffscreen();
@@ -97,11 +98,17 @@ public class VignetteManager : MonoBehaviour
     {
         if (currentVignetteData)
         {
+            if (currentVignetteData.gameObject.name == "Vignette 2")
+            {
+                // this feels so dirty
+                purgatoryBridge2HackRef.SetActive(true);
+            }
+
             currentVignetteData.gameObject.SetActive(false);
             currentVignetteData = null;
         }
 
-        WarpPlayerToNewLocation(lastPlayerPurgatoryPosition);
+        WarpPlayerToNewLocation(lastPlayerPurgatoryPosition, 0f);
         LerpCameraToNewLocation(lastCameraPurgatoryPosition);
         LerpUIOnscreen();
 
@@ -110,13 +117,13 @@ public class VignetteManager : MonoBehaviour
     }
 
     //-----------------------------------------------------------------------------
-    void WarpPlayerToNewLocation(Vector3 newLocation)
+    void WarpPlayerToNewLocation(Vector3 newLocation, float delay)
     {
         lastPlayerPurgatoryPosition = player.position;
 
         // Warp the player to vignette location once out of camera view
         var sequence = DOTween.Sequence();
-        sequence.AppendInterval(vignetteTransitionDuration * 0.6f);
+        sequence.AppendInterval(delay);
         sequence.Append(player.DOMove(newLocation, 0f));
     }
 

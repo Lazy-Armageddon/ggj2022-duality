@@ -1,5 +1,3 @@
-VAR vignette2 = false
-
 ->unkown
 
 === unkown ===
@@ -28,7 +26,5 @@ Ghost: I have one more question for you...
 === ending ===
 
 Ghost: no more talking! We're outta here
-
-~vignette2 = true
 
 ->END
