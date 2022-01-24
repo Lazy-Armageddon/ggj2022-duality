@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 //using System.Diagnostics;
+using TMPro;
 
 public class DialogManager : MonoBehaviour
 {
@@ -19,16 +20,21 @@ public class DialogManager : MonoBehaviour
         }
     }
 
+    TextMeshProUGUI findTextInScene(string name)
+    {
+        var text = GameObject.Find(name)?.GetComponent<TextMeshProUGUI>();
+        if (!text) { Debug.Log("warning: could not find \"" + name + "\" GameObject w/ TextMeshProUGUI instance."); }
+        return text;
+    }
+
     // called before Start()
     void Awake()
     {
         // find panels with names by convention
-        goodPanel = GameObject.Find("Good Panel");
-        badPanel = GameObject.Find("Bad Panel");
-
-        // warn about those that could not be find
-        if (!goodPanel) { Debug.Log("warning: could not find 'Good Panel'"); }
-        if (!badPanel) { Debug.Log("warning: could not find 'Bad Panel'"); }
+        angelText = findTextInScene("AngelText");
+        demonText = findTextInScene("DemonText");
+        playerText = findTextInScene("PlayerText");
+        npcText = findTextInScene("NpcText");
     }
 
     void Start()
@@ -41,9 +47,7 @@ public class DialogManager : MonoBehaviour
         DebugMsg("DialogManager.OnChoices(...)");
 
         // clear whatever we may have had from before
-        //RemoveChildren(canvas);
-        RemoveChildren(goodPanel);
-        RemoveChildren(badPanel);
+        ClearAllText();
 
         // display all the choices
         for (int i = 0; i < choices.Count; i++)
@@ -53,7 +57,6 @@ public class DialogManager : MonoBehaviour
 
             // Tell the button what to do when we press it
             button.onClick.AddListener(delegate {
-                //OnClickChoiceButton(choice);
                 if (OnSelectChoice != null)
                 {
                     OnSelectChoice(choice);
@@ -71,9 +74,7 @@ public class DialogManager : MonoBehaviour
         DebugMsg("DialogManager.OnTextLine(" + text + ")");
 
         // clear whatever we may have had from before
-        //RemoveChildren(canvas);
-        RemoveChildren(goodPanel);
-        RemoveChildren(badPanel);
+        ClearAllText();
 
         // display new text
         CreateContentView(text);
@@ -86,7 +87,7 @@ public class DialogManager : MonoBehaviour
 
         // cheat button downwards to help keep it from overlapping text
         var buttonRectTransform = button.GetComponent<RectTransform>();
-        buttonRectTransform.localPosition += Vector3.down * 150;
+        //buttonRectTransform.localPosition += Vector3.down * 150;
     }
 
     // Creates a textbox showing the the line of text
@@ -94,17 +95,32 @@ public class DialogManager : MonoBehaviour
     {
         DebugMsg("DialogManager.CreateContentView(" + text + ")");
 
-        Text storyText = Instantiate(textPrefab) as Text;
-        storyText.text = text;
-        //storyText.transform.SetParent(canvas.transform, false);
+        // determine first where we want to write the text
 
-        // default to good panel as target
-        GameObject target = goodPanel;
-        if (text.StartsWith("Alice"))
+        // default to npc panel as target
+        TextMeshProUGUI target = npcText;
+
+        // pick others depending on special text start patterns
+        if (text.StartsWith("Angel"))
         {
-            target = badPanel;
+            target = angelText;
         }
-        storyText.transform.SetParent(target.transform, false);
+        else if (text.StartsWith("Demon") || text.StartsWith("Devil"))
+        {
+            target = demonText;
+        }
+        else if (text.StartsWith("Player") || text.StartsWith("Me"))
+        {
+            target = playerText;
+        }
+
+        if (!target)
+        {
+            Debug.Log("warning: could not find target to write text message...");
+            return;
+        }
+
+        target.text = text;
     }
 
     // Creates a button showing the choice text
@@ -114,8 +130,8 @@ public class DialogManager : MonoBehaviour
 
         // Creates the button from a prefab
         Button choice = Instantiate(buttonPrefab) as Button;
-        //GameObject target = canvas;
-        GameObject target = goodPanel;
+
+        GameObject target = playerText.gameObject;
         choice.transform.SetParent(target.transform, false);
 
         // Gets the text from the button prefab
@@ -127,6 +143,28 @@ public class DialogManager : MonoBehaviour
         layoutGroup.childForceExpandHeight = false;
 
         return choice;
+    }
+
+    void ClearAllText()
+    {
+        RemoveChildren(playerText.gameObject);
+
+        if (angelText)
+        {
+            angelText.text = "";
+        }
+        if (demonText)
+        {
+            demonText.text = "";
+        }
+        if (playerText)
+        {
+            playerText.text = "";
+        }
+        if (npcText)
+        {
+            npcText.text = "";
+        }
     }
 
     // Destroys all the children of this gameobject (all the UI)
@@ -158,8 +196,7 @@ public class DialogManager : MonoBehaviour
 
     public void OnFinishStory()
     {
-        RemoveChildren(goodPanel);
-        RemoveChildren(badPanel);
+        ClearAllText();
         //Button choice = CreateChoiceView("End of story.\nRestart?");
         //choice.onClick.AddListener(delegate {
         //    StartStory();
@@ -169,15 +206,13 @@ public class DialogManager : MonoBehaviour
     public event Action OnAdvanceStory;
     public event Action<Ink.Runtime.Choice> OnSelectChoice;
 
-    [SerializeField]
-    private Canvas canvas = null;
-
     // UI Prefabs
-    [SerializeField]
-    private Text textPrefab = null;
     [SerializeField]
     private Button buttonPrefab = null;
 
-    private GameObject goodPanel;
-    private GameObject badPanel;
+    // panels
+    private TextMeshProUGUI angelText;
+    private TextMeshProUGUI demonText;
+    private TextMeshProUGUI playerText;
+    private TextMeshProUGUI npcText;
 }
