@@ -18,6 +18,7 @@ public class VignetteManager : MonoBehaviour
     public float vignetteTransitionDuration = 1.5f;
     public AudioClip vignetteStartSound;
     public AudioClip vignetteMusic;
+    public GameObject purgatoryBridge2HackRef;
 
     [Header("UI")]
     public Transform angelDemonRoot;
@@ -97,6 +98,12 @@ public class VignetteManager : MonoBehaviour
     {
         if (currentVignetteData)
         {
+            if (currentVignetteData.gameObject.name == "Vignette 2")
+            {
+                // this feels so dirty
+                purgatoryBridge2HackRef.SetActive(true);
+            }
+
             currentVignetteData.gameObject.SetActive(false);
             currentVignetteData = null;
         }

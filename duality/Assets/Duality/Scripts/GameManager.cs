@@ -50,11 +50,6 @@ public class GameManager : MonoBehaviour
     }
 
     //-----------------------------------------------------------------------------
-    void Start()
-    {
-    }
-
-    //-----------------------------------------------------------------------------
     GameObject FindGameObject(string name)
     {
         var go = GameObject.Find(name);
