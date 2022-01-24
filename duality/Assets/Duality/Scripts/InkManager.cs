@@ -157,6 +157,6 @@ public class InkManager : MonoBehaviour
     private VariablesState storyState;
 
     [SerializeField]
-    private TextAsset _inkJsonAsset = null;
+    public TextAsset _inkJsonAsset = null;
     private Story _story;
 }

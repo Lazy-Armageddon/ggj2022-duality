@@ -4846,6 +4846,7 @@ MonoBehaviour:
   tempVignetteDataInstance2: {fileID: 1445091282}
   vignetteManager: {fileID: 1353689968}
   purgatoryBridge1: {fileID: 176505687}
+  _cutGrassInkJsonAsset: {fileID: 4900000, guid: 6468eb18629cc214495cbdf847d1d889, type: 3}
 --- !u!4 &1890040084
 Transform:
   m_ObjectHideFlags: 0
