@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [Header("Temp Debug")]
     public VignetteData tempVignetteDataInstance1;
     public VignetteData tempVignetteDataInstance2;
+    public VignetteData tempVignetteDataInstance3;
 
     [Header("Dialogue")]
     private InkManager activeInkManager;
@@ -239,5 +240,10 @@ public class GameManager : MonoBehaviour
     bool CheckStoryStateBool(string name)
     {
         return storyState.ContainsKey(name) && storyState[name] is bool && (bool)storyState[name];
+    }
+
+    public void StartVignette3()
+    {
+        vignetteManager.StartVignette(tempVignetteDataInstance3);
     }
 }
