@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Duality/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Duality/Scenes/Michael.unity
+    guid: 46a199004dcfd4e49997a282bfcc5528
   m_configObjects: {}
