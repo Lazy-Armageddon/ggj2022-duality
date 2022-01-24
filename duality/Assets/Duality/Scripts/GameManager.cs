@@ -186,10 +186,21 @@ public class GameManager : MonoBehaviour
         }
 
         // try trigger special story events
-        if (storyState.ContainsKey("vignette") && storyState["vignette"] is bool && (bool)storyState["vignette"])
+        if (CheckStoryStateBool("vignette"))
         {
             storyState["vignette"] = false;
             vignetteManager.StartVignette(tempVignetteDataInstance1);
         }
+
+        if (CheckStoryStateBool("vignette2"))
+        {
+            storyState["vignette2"] = false;
+            vignetteManager.StartVignette(tempVignetteDataInstance1);
+        }
+    }
+
+    bool CheckStoryStateBool(string name)
+    {
+        return storyState.ContainsKey(name) && storyState[name] is bool && (bool)storyState[name];
     }
 }

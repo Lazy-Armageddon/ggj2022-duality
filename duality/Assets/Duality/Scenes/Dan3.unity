@@ -2894,7 +2894,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _started: 0
-  _inkJsonAsset: {fileID: 4900000, guid: d34ad85389c4d6848ac040f85f8c8c91, type: 3}
+  _inkJsonAsset: {fileID: 4900000, guid: 981ac9fe2f3272342ba7a62859c49e52, type: 3}
 --- !u!82 &1144990930
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5094,7 +5094,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4111996881791359411, guid: 9d891e23bc2fadb43b44277f18d9cf4c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d891e23bc2fadb43b44277f18d9cf4c, type: 3}
