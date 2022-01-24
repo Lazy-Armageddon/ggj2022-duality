@@ -894,8 +894,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 123.35, y: -0.000032783}
-  m_SizeDelta: {x: 246.68, y: 88.8}
+  m_AnchoredPosition: {x: 286.97, y: 0.00075722}
+  m_SizeDelta: {x: 573.93, y: 172.98}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &228577892
 MonoBehaviour:
@@ -1697,7 +1697,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _started: 0
-  _inkJsonAsset: {fileID: 4900000, guid: d34ad85389c4d6848ac040f85f8c8c91, type: 3}
+  _inkJsonAsset: {fileID: 4900000, guid: 81f5e0d8979f2da4cbcb6e5a3704fe5d, type: 3}
 --- !u!82 &402767995
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2445,8 +2445,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -123.34, y: -0.000012398}
-  m_SizeDelta: {x: 246.69, y: 88.8}
+  m_AnchoredPosition: {x: -286.96, y: 0.00075722}
+  m_SizeDelta: {x: 573.93, y: 172.98}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &573241281
 MonoBehaviour:
@@ -2695,8 +2695,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00023174, y: -0.000084877}
-  m_SizeDelta: {x: 239.6, y: 85.735}
+  m_AnchoredPosition: {x: 0.00014496, y: -0.000055313}
+  m_SizeDelta: {x: 557.44, y: 167}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &611772097
 MonoBehaviour:
@@ -3627,8 +3627,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.8315, y: -0.87595}
-  m_SizeDelta: {x: 238.81, y: 83.983}
+  m_AnchoredPosition: {x: 0.00028992, y: -0.000055313}
+  m_SizeDelta: {x: 554.17, y: 167}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &812346088
 MonoBehaviour:
@@ -6845,7 +6845,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _started: 0
-  _inkJsonAsset: {fileID: 4900000, guid: 43e61159e4d783d42b52608d99fabc80, type: 3}
+  _inkJsonAsset: {fileID: 4900000, guid: 58c032099cf5a544c92f25ae90f47dfa, type: 3}
 --- !u!82 &1903426539
 AudioSource:
   m_ObjectHideFlags: 0

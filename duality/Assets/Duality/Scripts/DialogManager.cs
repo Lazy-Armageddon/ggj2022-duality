@@ -109,7 +109,7 @@ public class DialogManager : MonoBehaviour
         {
             target = demonText;
         }
-        else if (text.StartsWith("Player") || text.StartsWith("Me"))
+        else if (text.StartsWith("Player") || text.StartsWith("Me") || text.StartsWith("Character"))
         {
             target = playerText;
         }
