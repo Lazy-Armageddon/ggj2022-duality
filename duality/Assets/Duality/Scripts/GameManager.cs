@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
         // test go to vignette
         while (true)
         {
-            /*
+            //*
             // TEMP DEBUG - do this in response to dialogue
             if (Input.GetKeyDown(KeyCode.Alpha0))
             {
@@ -201,7 +201,7 @@ public class GameManager : MonoBehaviour
         if (CheckStoryStateBool("vignette2"))
         {
             storyState["vignette2"] = false;
-            vignetteManager.StartVignette(tempVignetteDataInstance1);
+            vignetteManager.StartVignette(tempVignetteDataInstance2);
         }
     }
 

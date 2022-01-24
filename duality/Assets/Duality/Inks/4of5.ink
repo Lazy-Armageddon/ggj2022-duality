@@ -1,3 +1,4 @@
+VAR vignette2 = false
 
 ->purgatory
 
@@ -54,5 +55,7 @@ Character: WHY WOULD YOU MAKE ME DO THAT!?!?!
 Ghost: well it's what i do to everyone who comes here before judgement...
 
 Character: YOUR REIGN OF TERROR ENDS NOW!
+
+~vignette2 = true
 
 ->END
