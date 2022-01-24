@@ -39,7 +39,7 @@ public class VignetteManager : MonoBehaviour
     //-----------------------------------------------------------------------------
     (int, int) GetPreferredPixelResolution()
     {
-        return (Screen.width - 420, Screen.height - 420);
+        return ((int)(Screen.width * 0.76f), (int)(Screen.height * 0.63f));
     }
 
     //-----------------------------------------------------------------------------
@@ -71,6 +71,12 @@ public class VignetteManager : MonoBehaviour
         LerpCameraToNewLocation(newVignetteData.cameraStart.position, () =>
         {
             currentVignetteData.npc.gameObject.SetActive(true);
+
+            VignetteLogic logic = newVignetteData.GetComponent<VignetteLogic>();
+            if (logic != null)
+            {
+                logic.OnVignetteStart(this);
+            }
         });
         LerpUIOffscreen();
 
