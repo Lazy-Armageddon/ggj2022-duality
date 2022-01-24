@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     [Header("Temp Debug")]
     public VignetteData tempVignetteDataInstance1;
+    public VignetteData tempVignetteDataInstance2;
 
     [Header("Dialogue")]
     private InkManager activeInkManager;
@@ -73,6 +74,11 @@ public class GameManager : MonoBehaviour
                 purgatoryBridge1.SetActive(true);
             }
             //*/
+
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                vignetteManager.StartVignette(tempVignetteDataInstance2);
+            }
 
             yield return null;
         }
