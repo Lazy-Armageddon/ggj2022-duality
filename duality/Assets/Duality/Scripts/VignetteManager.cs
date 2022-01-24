@@ -2,7 +2,6 @@ using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 using UnityEngine.U2D;
 
 public class VignetteManager : MonoBehaviour
