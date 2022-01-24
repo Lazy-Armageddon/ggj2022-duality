@@ -18,6 +18,8 @@ public class KillZone : MonoBehaviour
         if (col.gameObject.tag == "Player")
         {
             player.position = playerStartPosition;
+
+            player.gameObject.GetComponent<CharacterController2D>().ResetState();
             // SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
         }
         // else

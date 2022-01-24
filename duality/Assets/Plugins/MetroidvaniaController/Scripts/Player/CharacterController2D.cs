@@ -17,7 +17,7 @@ public class CharacterController2D : MonoBehaviour
 	private Rigidbody2D m_Rigidbody2D;
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	private Vector3 velocity = Vector3.zero;
-	private float limitFallSpeed = 25f; // Limit fall speed
+	const float limitFallSpeed = 25f; // Limit fall speed
 
 	public bool canDoubleJump = true; //If player can double jump
 	[SerializeField] private float m_DashForce = 25f;
@@ -29,7 +29,8 @@ public class CharacterController2D : MonoBehaviour
 	private float prevVelocityX = 0f;
 	private bool canCheck = false; //For check if player is wallsliding
 
-	public float life = 10f; //Life of the player
+	const float defaultLife = 10f;
+	public float life = defaultLife; //Life of the player
 	public bool invincible = false; //If player can die
 	private bool canMove = true; //If player can move
 
@@ -49,6 +50,26 @@ public class CharacterController2D : MonoBehaviour
 
 	[System.Serializable]
 	public class BoolEvent : UnityEvent<bool> { }
+
+	public void ResetState()
+	{
+		m_Grounded = false;
+		velocity = Vector3.zero;
+		canDoubleJump = true;
+		canDash = true;
+		isDashing = false;
+		m_IsWall = false;
+		isWallSliding = false;
+		oldWallSlidding = false;
+		prevVelocityX = 0f;
+		canCheck = false;
+		life = defaultLife;
+		invincible = false;
+		canMove = true;
+		jumpWallStartX = 0;
+		jumpWallDistX = 0;
+		limitVelOnWallJump = false;
+	}
 
 	private void Awake()
 	{
